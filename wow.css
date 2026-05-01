@@ -1,0 +1,97 @@
+:root {
+    --primary-green: #2ecc71;
+    --deep-black: #0a0a0a;
+    --text-white: #f5f5f5;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    /* Gradient from Green to Black */
+    background: linear-gradient(180deg, var(--primary-green) 0%, var(--deep-black) 40%);
+    background-attachment: fixed; /* Keeps the gradient smooth as you scroll */
+    color: var(--text-white);
+    min-height: 200vh; /* Just for scrolling space */
+}
+
+/* Sticky Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    backdrop-filter: blur(10px); /* Modern frosted glass effect */
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo {
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--primary-green);
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: var(--primary-green);
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #1a1a1a;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+    z-index: 1;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--primary-green);
+    color: black;
+}
+
+.show {
+    display: block;
+}
+
+/* Hero Content */
+.hero {
+    text-align: center;
+    padding: 150px 20px;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}

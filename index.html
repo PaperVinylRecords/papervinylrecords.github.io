@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Vinyl Records</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">PAPER VINYL</div>
+            
+            <!-- The Dropdown Button -->
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleMenu()">Menu ▾</button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#artists">Artists</a>
+                    <a href="#releases">Releases</a>
+                    <a href="#store">Store</a>
+                    <a href="#demos">Submit Demos</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Paper Vinyl Records</h1>
+        <p>The Future of Sound, Pressed to Digital.</p>
+    </header>
+
+    <section id="content">
+        <!-- Add your artists and player content here -->
+    </section>
+
+    <script>
+        /* Simple script to show/hide the menu */
+        function toggleMenu() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

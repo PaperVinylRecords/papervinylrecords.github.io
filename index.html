@@ -1,57 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paper Vinyl Records</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body { margin: 0; background: #121212; color: white; font-family: sans-serif; }
+        .scroll-tall { height: 400vh; } /* Controls how long the scroll lasts */
+        
+        .sticky-center {
+            position: sticky; top: 0; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+
+        .scene {
+            position: absolute; opacity: 0; transition: opacity 0.5s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .scene.active { opacity: 1; }
+
+        /* The Ripping Effect */
+        .rip-wrapper { position: relative; width: 400px; height: 400px; }
+        
+        .cover-half {
+            position: absolute; width: 100%; height: 50%;
+            background-size: 400px 400px;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Jagged edges using clip-path */
+        .top { 
+            top: 0; background-position: top;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 90%, 60% 100%, 40% 90%, 20% 100%, 0 90%);
+        }
+        .bottom { 
+            bottom: 0; background-position: bottom;
+            clip-path: polygon(0 10%, 20% 0, 40% 10%, 60% 0, 80% 10%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Animation when class 'ripped' is added */
+        .ripped .top { transform: translateY(-120%) rotate(-10deg); }
+        .ripped .bottom { transform: translateY(120%) rotate(10deg); }
+
+        .artist-reveal {
+            position: absolute; z-index: -1; text-align: center;
+            transform: scale(0.8); transition: 0.8s; opacity: 0;
+        }
+        .ripped + .artist-reveal { transform: scale(1); opacity: 1; }
+    </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">PAPER VINYL</div>
-            
-            <!-- The Dropdown Button -->
-            <div class="dropdown">
-                <button class="dropbtn" onclick="toggleMenu()">Menu ▾</button>
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="#artists">Artists</a>
-                    <a href="#releases">Releases</a>
-                    <a href="#store">Store</a>
-                    <a href="#demos">Submit Demos</a>
-                </div>
+<div class="scroll-tall">
+    <div class="sticky-center">
+        <!-- Artist 1 -->
+        <div class="scene" id="s1">
+            <div class="rip-wrapper" id="rip1">
+                <div class="cover-half top" style="background-image:url('COVER_URL_HERE')"></div>
+                <div class="cover-half bottom" style="background-image:url('COVER_URL_HERE')"></div>
+            </div>
+            <div class="artist-reveal">
+                <img src="ARTIST_PHOTO_URL" width="300">
+                <h2>ARTIST NAME</h2>
             </div>
         </div>
-    </nav>
 
-    <header class="hero">
-        <h1>Paper Vinyl Records</h1>
-        <p>The Future of Sound, Pressed to Digital.</p>
-    </header>
+        <!-- Contact Section (Last Scene) -->
+        <div class="scene" id="contact">
+            <h1>Paper Vinyl Records</h1>
+            <p>Contact: papervinyl@musician.org</p>
+        </div>
+    </div>
+</div>
 
-    <section id="content">
-        <!-- Add your artists and player content here -->
-    </section>
+<script>
+    window.addEventListener('scroll', () => {
+        const scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight);
+        const rip = document.getElementById('rip1');
+        const s1 = document.getElementById('s1');
+        const contact = document.getElementById('contact');
 
-    <script>
-        /* Simple script to show/hide the menu */
-        function toggleMenu() {
-            document.getElementById("myDropdown").classList.toggle("show");
+        // Logic: Reveal scene 1, then rip it, then show contact
+        if (scroll < 0.3) {
+            s1.classList.add('active');
+            rip.classList.remove('ripped');
+            contact.classList.remove('active');
+        } else if (scroll < 0.7) {
+            rip.classList.add('ripped');
+        } else {
+            s1.classList.remove('active');
+            contact.classList.add('active');
         }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-    </script>
+    });
+</script>
 </body>
 </html>

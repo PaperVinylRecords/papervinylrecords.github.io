@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Vinyl Records</title>
     <style>
         body { margin: 0; background: #121212; color: white; font-family: sans-serif; }
-        .scroll-tall { height: 400vh; } /* Controls how long the scroll lasts */
+        .scroll-tall { height: 700vh; } 
         
         .sticky-center {
             position: sticky; top: 0; height: 100vh;
@@ -11,13 +14,23 @@
             overflow: hidden;
         }
 
+        /* --- THE LOGO --- */
+        .label-logo {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 120px; /* Adjust size as needed */
+            z-index: 100; /* Keeps it on top of everything */
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        }
+
         .scene {
             position: absolute; opacity: 0; transition: opacity 0.5s;
             display: flex; flex-direction: column; align-items: center;
+            width: 100%;
         }
         .scene.active { opacity: 1; }
 
-        /* The Ripping Effect */
         .rip-wrapper { position: relative; width: 400px; height: 400px; }
         
         .cover-half {
@@ -26,70 +39,105 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Jagged edges using clip-path */
         .top { 
             top: 0; background-position: top;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 90%, 60% 100%, 40% 90%, 20% 100%, 0 90%);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 92%, 60% 100%, 40% 92%, 20% 100%, 0 92%);
         }
         .bottom { 
             bottom: 0; background-position: bottom;
-            clip-path: polygon(0 10%, 20% 0, 40% 10%, 60% 0, 80% 10%, 100% 0, 100% 100%, 0 100%);
+            clip-path: polygon(0 8%, 20% 0, 40% 8%, 60% 0, 80% 8%, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* Animation when class 'ripped' is added */
-        .ripped .top { transform: translateY(-120%) rotate(-10deg); }
-        .ripped .bottom { transform: translateY(120%) rotate(10deg); }
+        .ripped .top { transform: translateY(-130%) rotate(-12deg); opacity: 0; }
+        .ripped .bottom { transform: translateY(130%) rotate(12deg); opacity: 0; }
 
         .artist-reveal {
             position: absolute; z-index: -1; text-align: center;
-            transform: scale(0.8); transition: 0.8s; opacity: 0;
+            transform: scale(0.9); transition: 0.8s; opacity: 0;
         }
         .ripped + .artist-reveal { transform: scale(1); opacity: 1; }
+        .artist-reveal img { width: 350px; border-radius: 2px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
 <div class="scroll-tall">
     <div class="sticky-center">
+        
+        <!-- Constant Label Logo -->
+        <img src="images/pvr.png" class="label-logo" alt="Paper Vinyl Records">
+
         <!-- Artist 1 -->
-        <div class="scene" id="s1">
-            <div class="rip-wrapper" id="rip1">
-                <div class="cover-half top" style="background-image:url('COVER_URL_HERE')"></div>
-                <div class="cover-half bottom" style="background-image:url('COVER_URL_HERE')"></div>
+        <div class="scene">
+            <div class="rip-wrapper">
+                <div class="cover-half top" style="background-image:url('ARTIST_1_COVER_URL')"></div>
+                <div class="cover-half bottom" style="background-image:url('ARTIST_1_COVER_URL')"></div>
             </div>
             <div class="artist-reveal">
-                <img src="ARTIST_PHOTO_URL" width="300">
-                <h2>ARTIST NAME</h2>
+                <img src="ARTIST_1_PHOTO_URL">
+                <h2>ARTIST ONE</h2>
             </div>
         </div>
 
-        <!-- Contact Section (Last Scene) -->
-        <div class="scene" id="contact">
-            <h1>Paper Vinyl Records</h1>
-            <p>Contact: papervinyl@musician.org</p>
+        <!-- Artist 2 -->
+        <div class="scene">
+            <div class="rip-wrapper">
+                <div class="cover-half top" style="background-image:url('ARTIST_2_COVER_URL')"></div>
+                <div class="cover-half bottom" style="background-image:url('ARTIST_2_COVER_URL')"></div>
+            </div>
+            <div class="artist-reveal">
+                <img src="ARTIST_2_PHOTO_URL">
+                <h2>ARTIST TWO</h2>
+            </div>
         </div>
+
+        <!-- Artist 3 -->
+        <div class="scene">
+            <div class="rip-wrapper">
+                <div class="cover-half top" style="background-image:url('ARTIST_3_COVER_URL')"></div>
+                <div class="cover-half bottom" style="background-image:url('ARTIST_3_COVER_URL')"></div>
+            </div>
+            <div class="artist-reveal">
+                <img src="ARTIST_3_PHOTO_URL">
+                <h2>ARTIST THREE</h2>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="scene">
+            <h1>Paper Vinyl Records</h1>
+            <p>Demo Submissions: papervinyl@musician.org</p>
+        </div>
+
     </div>
 </div>
 
 <script>
-    window.addEventListener('scroll', () => {
-        const scroll = window.scrollY / (document.body.offsetHeight - window.innerHeight);
-        const rip = document.getElementById('rip1');
-        const s1 = document.getElementById('s1');
-        const contact = document.getElementById('contact');
+    const scenes = document.querySelectorAll('.scene');
 
-        // Logic: Reveal scene 1, then rip it, then show contact
-        if (scroll < 0.3) {
-            s1.classList.add('active');
-            rip.classList.remove('ripped');
-            contact.classList.remove('active');
-        } else if (scroll < 0.7) {
-            rip.classList.add('ripped');
-        } else {
-            s1.classList.remove('active');
-            contact.classList.add('active');
-        }
+    window.addEventListener('scroll', () => {
+        const scrollFraction = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+        
+        scenes.forEach((scene, index) => {
+            const start = index / scenes.length;
+            const end = (index + 1) / scenes.length;
+
+            if (scrollFraction >= start && scrollFraction < end) {
+                scene.classList.add('active');
+                const sceneProgress = (scrollFraction - start) / (end - start);
+                const ripWrapper = scene.querySelector('.rip-wrapper');
+                
+                if (ripWrapper && sceneProgress > 0.35) {
+                    ripWrapper.classList.add('ripped');
+                } else if (ripWrapper) {
+                    ripWrapper.classList.remove('ripped');
+                }
+            } else {
+                scene.classList.remove('active');
+            }
+        });
     });
 </script>
+
 </body>
 </html>

@@ -6,7 +6,6 @@ const navLogo = document.querySelector('.nav-logo');
 const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
-
 const colors = [
     {r: 12, g: 34, b: 31},   // Dark Forest Green
     {r: 0, g: 255, b: 0},    // Neon Green
@@ -19,7 +18,6 @@ function lerpColor(f) {
     const i = Math.floor(section);
     const next = Math.min(i + 1, colors.length - 1);
     const localF = section - i;
-
     const r = Math.round(colors[i].r + (colors[next].r - colors[i].r) * localF);
     const g = Math.round(colors[i].g + (colors[next].g - colors[i].g) * localF);
     const b = Math.round(colors[i].b + (colors[next].b - colors[i].b) * localF);
@@ -31,10 +29,8 @@ window.addEventListener('scroll', () => {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollFraction = totalHeight > 0 ? scrollY / totalHeight : 0;
 
-    // 1. Background Color
     document.body.style.backgroundColor = lerpColor(scrollFraction);
 
-    // 2. Hide Entry Screen & Start Audio
     if (scrollY > 50) {
         entryScreen.style.opacity = '0';
         if (!audioStarted) {
@@ -44,7 +40,6 @@ window.addEventListener('scroll', () => {
         }
     }
 
-    // 3. Scene and Logo Management
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;
@@ -52,25 +47,22 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
-            // LOGO HANDOFF: Only happen in the very last section
             if (index === scenes.length - 1) {
                 mainLogo.classList.add('move-to-menu');
                 topMenu.classList.add('visible');
+                if(navLogo) navLogo.style.opacity = '1';
             } else {
                 mainLogo.classList.remove('move-to-menu');
                 topMenu.classList.remove('visible');
+                if(navLogo) navLogo.style.opacity = '0';
             }
 
-            // RIP LOGIC
             const sceneProgress = (scrollFraction - start) / (end - start);
             const rip = scene.querySelector('.rip-wrapper');
             if (rip && sceneProgress > 0.4) rip.classList.add('ripped');
             else if (rip) rip.classList.remove('ripped');
-
         } else {
             scene.classList.remove('active');
         }
     });
 });
-
-console.log("Paper Vinyl Records Script Fully Loaded. (kill me)");

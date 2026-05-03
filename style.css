@@ -1,81 +1,37 @@
-/* GLOBAL RESET & FONTS */
-body {
-    margin: 0;
-    background: #121212;
-    color: white;
-    font-family: 'Courier New', Courier, monospace;
-}
+/* ... Keep existing Body, Menu, and Grid styles ... */
 
-/* PERSISTENT BLUR MENU */
-#top-menu {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 70px;
-    background: rgba(18, 18, 18, 0.7);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 50px; z-index: 300; box-sizing: border-box;
-}
-
-/* UPDATED LOGO SIZE */
-.nav-logo { height: 35px; } 
-
-.nav-links { display: flex; align-items: center; }
-.nav-links a { color: white !important; text-decoration: none; margin-left: 20px; text-transform: uppercase; font-size: 0.85rem; transition: 0.3s; }
-.nav-links a:hover { color: #00ff00 !important; }
-
-/* DROPDOWN LOGIC */
-.dropdown { position: relative; display: inline-block; }
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%; left: 20px;
-    background: rgba(18, 18, 18, 0.95);
-    backdrop-filter: blur(10px);
-    min-width: 160px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 500;
-}
-.dropdown-content a {
-    padding: 12px 16px;
-    margin: 0 !important;
-    display: block;
-    font-size: 0.75rem;
-}
-.dropdown:hover .dropdown-content { display: block; }
-
-/* CONTENT LAYOUT */
-.content-wrapper { padding: 120px 50px 50px; }
-.page-title { text-transform: uppercase; letter-spacing: 4px; text-align: center; margin-bottom: 50px; }
-
-/* ARTIST/TEAM GRID */
-.artist-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px; max-width: 1200px; margin: 0 auto;
-}
-.artist-card { position: relative; cursor: pointer; text-align: center; transition: transform 0.3s ease; }
-.artist-card:hover { transform: translateY(-10px); }
-.artist-card img { width: 100%; aspect-ratio: 1/1; border-radius: 2px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-/* ABOUT PAGE SPECIFIC */
-.about-container { max-width: 800px; margin: 0 auto; line-height: 1.8; }
-.about-section { margin-bottom: 60px; }
-.about-lead { font-size: 1.3rem; border-left: 3px solid white; padding-left: 20px; margin-bottom: 30px; }
-
-/* MODAL STYLES */
 .modal-overlay {
     display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.95); z-index: 1000; justify-content: center; align-items: center;
+    background: rgba(0, 0, 0, 0.95); z-index: 1000;
+    justify-content: center; align-items: center; backdrop-filter: blur(10px);
 }
-.modal-zoom-box { background: #e0e0e0; color: #121212; width: 90%; max-width: 800px; padding: 40px; transition: 0.5s; clip-path: polygon(1% 0%, 100% 2%, 99% 100%, 0% 97%); }
-.modal-zoom-box.active { transform: scale(1); opacity: 1; }
 
-.modal-links { margin-top: 30px; display: flex; gap: 25px; align-items: center; }
-.modal-links a { display: inline-block; width: 28px; height: 28px; transition: 0.2s; }
-.modal-links svg { width: 100%; height: 100%; fill: #121212; }
-.modal-links a:hover { transform: scale(1.2); }
-.modal-links .spotify-icon:hover svg { fill: #1DB954; }
-.modal-links .sc-icon:hover svg { fill: #FF5500; }
-.modal-links .insta-icon:hover svg { fill: #E1306C; }
+.modal-zoom-box {
+    background: #e0e0e0; color: #121212; width: 90%; max-width: 750px;
+    position: relative; padding: 30px; transition: 0.5s;
+    clip-path: polygon(1% 0%, 100% 2%, 99% 100%, 0% 97%);
+}
+
+.modal-content { 
+    display: flex; gap: 30px; align-items: center; 
+    flex-wrap: wrap; /* Wraps on smaller screens */
+}
+
+/* FIX: Image size cap */
+#modal-img { 
+    width: 280px; height: 280px; 
+    object-fit: cover; border-radius: 2px;
+    box-shadow: 10px 10px 0px #121212; 
+}
+
+.modal-info { flex: 1; min-width: 250px; }
+
+/* FIX: Close button visibility */
+.close-btn { 
+    position: fixed; top: 30px; right: 40px; 
+    font-size: 50px; color: white; cursor: pointer; 
+    z-index: 1100; line-height: 1;
+}
+
+.modal-links { margin-top: 20px; display: flex; gap: 20px; }
+.modal-links svg { width: 28px; height: 28px; fill: #121212; }

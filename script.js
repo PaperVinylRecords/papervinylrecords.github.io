@@ -1,16 +1,16 @@
 const scenes = document.querySelectorAll('.scene');
+const entry = document.getElementById('entry-screen');
 const menu = document.getElementById('top-menu');
 const logo = document.getElementById('main-logo');
 const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
 
-// Sampled colors from your specific images
 const colors = [
-    {r: 35, g: 55, b: 45},   // Calming Daily (Muted Green)
-    {r: 50, g: 45, b: 30},   // ChaChing (Muted Gold)
-    {r: 60, g: 20, b: 20},   // BFUP (Deep Muted Red)
-    {r: 18, g: 18, b: 18}    // Black (Contact)
+    {r: 30, g: 45, b: 40}, // Green
+    {r: 45, g: 40, b: 25}, // Gold
+    {r: 50, g: 15, b: 15}, // Red
+    {r: 18, g: 18, b: 18}  // Black
 ];
 
 function lerpColor(f) {
@@ -25,18 +25,27 @@ function lerpColor(f) {
 }
 
 window.addEventListener('scroll', () => {
+    // Ensuring we capture the scroll position correctly across browsers
     const y = window.pageYOffset || document.documentElement.scrollTop;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const fraction = Math.max(0, Math.min(y / max, 1));
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const fraction = Math.max(0, Math.min(y / totalHeight, 1));
 
-    // Audio & Background Color
+    // 1. Background Logic
     document.body.style.backgroundColor = lerpColor(fraction);
-    if (!audioStarted && y > 100) {
-        crackle.volume = 0.2;
-        crackle.play().catch(() => {});
-        audioStarted = true;
+
+    // 2. Entry Screen Removal
+    if (y > 40) {
+        entry.style.opacity = '0';
+        if (!audioStarted) {
+            crackle.volume = 0.2;
+            crackle.play().catch(() => {});
+            audioStarted = true;
+        }
+    } else {
+        entry.style.opacity = '1';
     }
 
+    // 3. Scene and Slide Logic
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;
@@ -44,7 +53,7 @@ window.addEventListener('scroll', () => {
         if (fraction >= start && fraction < end) {
             scene.classList.add('active');
             
-            // Handle final scene handoff
+            // Logo handoff logic for the final scene
             if (index === scenes.length - 1) {
                 menu.classList.add('visible');
                 logo.classList.add('hidden');
@@ -53,11 +62,10 @@ window.addEventListener('scroll', () => {
                 logo.classList.remove('hidden');
             }
 
-            // Rip Progress
             const progress = (fraction - start) / (end - start);
             const rip = scene.querySelector('.rip-wrapper');
             if (rip) {
-                if (progress > 0.4) rip.classList.add('ripped');
+                if (progress > 0.45) rip.classList.add('ripped');
                 else rip.classList.remove('ripped');
             }
         } else {
@@ -65,3 +73,5 @@ window.addEventListener('scroll', () => {
         }
     });
 });
+
+console.log("Paper Vinyl: Animation Engine Running.");

@@ -8,7 +8,11 @@ const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
 
-// Gradient colors to shift through
+// Audio Trim Settings (in seconds)
+const loopStart = 2; 
+const loopEnd = 12; 
+
+// Gradient Shifts
 const colors = [
     { start: '#121212', end: '#1a1a1a' }, 
     { start: '#1a1212', end: '#2a1a1a' }, 
@@ -21,32 +25,31 @@ window.addEventListener('scroll', () => {
     const totalHeight = document.body.scrollHeight - window.innerHeight;
     const scrollFraction = scrollY / totalHeight;
 
-    // --- AUDIO LOGIC ---
+    // 1. Audio Logic with Virtual Trim
     if (!audioStarted && scrollY > 10) {
         crackle.volume = 0;
+        crackle.currentTime = loopStart;
         crackle.play();
-        // Fade in the crackle over 2 seconds
         let fadeIn = setInterval(() => {
-            if (crackle.volume < 0.2) {
-                crackle.volume += 0.01;
-            } else {
-                clearInterval(fadeIn);
-            }
+            if (crackle.volume < 0.25) { crackle.volume += 0.01; } 
+            else { clearInterval(fadeIn); }
         }, 100);
         audioStarted = true;
     }
 
-    // --- ENTRY SCREEN & GRADIENTS ---
-    if (scrollY > 50) {
-        entryScreen.classList.add('hide-entry');
-    } else {
-        entryScreen.classList.remove('hide-entry');
+    // Loop the audio within the trimmed bounds
+    if (crackle.currentTime >= loopEnd) {
+        crackle.currentTime = loopStart;
     }
+
+    // 2. Entry Screen & Color Shift
+    if (scrollY > 50) { entryScreen.classList.add('hide-entry'); } 
+    else { entryScreen.classList.remove('hide-entry'); }
 
     const colorIndex = Math.min(Math.floor(scrollFraction * colors.length), colors.length - 1);
     document.body.style.background = `linear-gradient(135deg, ${colors[colorIndex].start}, ${colors[colorIndex].end})`;
 
-    // --- SCENE HANDLING ---
+    // 3. Scene Handling
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;

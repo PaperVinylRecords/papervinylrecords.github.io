@@ -6,11 +6,13 @@ const navLogo = document.querySelector('.nav-logo');
 const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
+
+// Album-inspired color palette
 const colors = [
-    {r: 12, g: 34, b: 31},   // Dark Forest Green
-    {r: 0, g: 255, b: 0},    // Neon Green
-    {r: 224, g: 224, b: 224},// Paper Grey
-    {r: 18, g: 18, b: 18}    // Deep Black
+    {r: 35, g: 55, b: 45},   // Calming Daily Series (Soft Forest)
+    {r: 50, g: 45, b: 30},   // ChaChing (Muted Gold/Dark)
+    {r: 60, g: 20, b: 20},   // BFUP (Deep Muted Red)
+    {r: 18, g: 18, b: 18}    // Final Black
 ];
 
 function lerpColor(f) {

@@ -7,12 +7,9 @@ const navLogo = document.querySelector('.nav-logo');
 const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
-
-// Audio Trim Settings (in seconds)
 const loopStart = 2; 
 const loopEnd = 12; 
 
-// Gradient Shifts
 const colors = [
     { start: '#121212', end: '#1a1a1a' }, 
     { start: '#1a1212', end: '#2a1a1a' }, 
@@ -21,31 +18,28 @@ const colors = [
 ];
 
 window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const totalHeight = document.body.scrollHeight - window.innerHeight;
-    const scrollFraction = scrollY / totalHeight;
+    // UPDATED: Use documentElement for more reliable height sensing
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    
+    // Safety check to prevent division by zero
+    const scrollFraction = totalHeight > 0 ? scrollY / totalHeight : 0;
 
-    // 1. Audio Logic with Virtual Trim
-    if (!audioStarted && scrollY > 10) {
-        crackle.volume = 0;
-        crackle.currentTime = loopStart;
-        crackle.play();
-        let fadeIn = setInterval(() => {
-            if (crackle.volume < 0.25) { crackle.volume += 0.01; } 
-            else { clearInterval(fadeIn); }
-        }, 100);
+    // 1. Force Entry Screen to hide
+    if (scrollY > 50) {
+        entryScreen.style.opacity = '0';
+        entryScreen.style.visibility = 'hidden';
+    } else {
+        entryScreen.style.opacity = '1';
+        entryScreen.style.visibility = 'visible';
+    }
+
+    // 2. Audio & Colors
+    if (!audioStarted && scrollY > 20) {
+        crackle.play().catch(() => {}); // Catch prevents errors if browser blocks auto-play
         audioStarted = true;
     }
-
-    // Loop the audio within the trimmed bounds
-    if (crackle.currentTime >= loopEnd) {
-        crackle.currentTime = loopStart;
-    }
-
-    // 2. Entry Screen & Color Shift
-    if (scrollY > 50) { entryScreen.classList.add('hide-entry'); } 
-    else { entryScreen.classList.remove('hide-entry'); }
-
+    
     const colorIndex = Math.min(Math.floor(scrollFraction * colors.length), colors.length - 1);
     document.body.style.background = `linear-gradient(135deg, ${colors[colorIndex].start}, ${colors[colorIndex].end})`;
 
@@ -57,24 +51,27 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
+            // Logic for Logo/Menu handoff
             if (index === scenes.length - 1) {
                 mainLogo.classList.add('move-to-menu');
                 topMenu.classList.add('visible');
                 overlay.classList.add('active');
-                navLogo.style.opacity = '1';
+                if(navLogo) navLogo.style.opacity = '1';
             } else {
                 mainLogo.classList.remove('move-to-menu');
                 topMenu.classList.remove('visible');
                 overlay.classList.remove('active');
-                navLogo.style.opacity = '0';
+                if(navLogo) navLogo.style.opacity = '0';
             }
 
             const sceneProgress = (scrollFraction - start) / (end - start);
             const ripWrapper = scene.querySelector('.rip-wrapper');
-            if (ripWrapper && sceneProgress > 0.35) {
-                ripWrapper.classList.add('ripped');
-            } else if (ripWrapper) {
-                ripWrapper.classList.remove('ripped');
+            if (ripWrapper) {
+                if (sceneProgress > 0.3) {
+                    ripWrapper.classList.add('ripped');
+                } else {
+                    ripWrapper.classList.remove('ripped');
+                }
             }
         } else {
             scene.classList.remove('active');

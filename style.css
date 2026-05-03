@@ -52,7 +52,7 @@ body {
 .modal-links {
     margin-top: 30px;
     display: flex;
-    gap: 25px;
+    gap: 25px; /* Fixed spacing */
     align-items: center;
 }
 

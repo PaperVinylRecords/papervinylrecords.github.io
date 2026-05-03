@@ -1,5 +1,5 @@
 const artistData = {
-    'wilrhy': { name: 'WilRhy', desc: "", img: 'images /wilrhy.jpg', spotify: 'https://spotify.com', soundcloud: '', insta: 'https://instagram.com' },
+    'wilrhy': { name: 'WilRhy', desc: "test", img: 'images /wilrhy.jpg', spotify: 'https://spotify.com', soundcloud: '', insta: 'https://instagram.com' },
     'frostability': { name: 'Frostability', desc: "", img: 'images /frostability.jpg', spotify: 'https://spotify.com', soundcloud: '', insta: 'https://instagram.com' },
     'undyingbear': { name: 'undyingbear', desc: "", img: 'images /undyingbear.jpg', spotify: 'https://spotify.com', soundcloud: '', insta: 'https://instagram.com' },
     'twistedanimations': { name: 'TwistedAnimations', desc: "", img: 'images /twistedanimations.jpg', spotify: 'https://spotify.com', soundcloud: '', insta: '' },

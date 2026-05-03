@@ -1,166 +1,46 @@
-<style>
-    /* 1. GLOBAL & GRADIENT BACKGROUND */
-    body { 
-        margin: 0; 
-        background: linear-gradient(135deg, #121212, #1a1a1a); /* Initial Colors */
-        color: white; 
-        font-family: 'Courier New', Courier, monospace; 
-        transition: background 1.5s ease; /* Smooth color shifts */
-        overflow-x: hidden;
-        min-height: 100vh;
-    }
+/* MODAL STYLES */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    backdrop-filter: blur(10px);
+}
 
-    /* 2. THE ENTRY SCREEN (Scroll to Enter) */
-    #entry-screen { 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100vh; 
-        display: flex; 
-        flex-direction: column; 
-        justify-content: center; 
-        align-items: center; 
-        z-index: 200; 
-        background: #121212; 
-        transition: opacity 0.6s ease, visibility 0.6s; 
-        pointer-events: none; /* CRITICAL: Allows scroll to pass through */
-    }
-    
-    .entry-text { 
-        font-size: 1.5rem; 
-        text-transform: uppercase; 
-        letter-spacing: 2px; 
-    }
+.modal-content {
+    background: #e0e0e0; /* Light paper color */
+    color: #121212;
+    margin: 10% auto;
+    padding: 40px;
+    width: 50%;
+    max-width: 500px;
+    position: relative;
+    /* Ripped paper look */
+    clip-path: polygon(0% 2%, 100% 0%, 98% 98%, 0% 100%, 2% 50%);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
 
-    /* 3. MENU & BLUR EFFECT */
-    #top-menu {
-        position: fixed;
-        top: -80px; /* Hidden off-screen */
-        left: 0;
-        width: 100%;
-        height: 70px;
-        background: rgba(18, 18, 18, 0.6); /* Translucent */
-        backdrop-filter: blur(15px); /* BLUR EFFECT */
-        -webkit-backdrop-filter: blur(15px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 50px;
-        z-index: 300;
-        transition: top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        box-sizing: border-box;
-    }
-    
-    #top-menu.visible { top: 0; }
+.close-btn {
+    position: absolute;
+    top: 10px; right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
 
-    .nav-logo { height: 40px; opacity: 0; transition: 0.5s; }
-    .nav-links a { 
-        color: white; 
-        text-decoration: none; 
-        margin-left: 20px; 
-        text-transform: uppercase; 
-        font-size: 0.85rem; 
-        letter-spacing: 1px; 
-        transition: 0.3s; 
-    }
-    .nav-links a:hover { color: #aaa; }
+.modal-body h2 { text-transform: uppercase; letter-spacing: 2px; }
+.modal-body p { line-height: 1.6; margin-bottom: 25px; }
 
-    /* 4. LOGO HANDOFF & OVERLAY */
-    #logo-overlay { 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 120px; 
-        background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); 
-        z-index: 90; 
-        opacity: 0; 
-        transition: opacity 0.5s ease; 
-        pointer-events: none; 
-    }
-    
-    #logo-overlay.active { opacity: 1; }
+.modal-links a {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 8px 15px;
+    border: 1px solid #121212;
+    color: #121212;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
 
-    .label-logo { 
-        position: absolute; 
-        top: 30px; 
-        left: 30px; 
-        width: 120px; 
-        z-index: 100; 
-        transition: opacity 0.5s ease, transform 0.5s ease; 
-    }
-    
-    .label-logo.move-to-menu { 
-        opacity: 0; 
-        transform: translateY(-50px); 
-    }
-
-    /* 5. ANIMATION SCENE SETUP */
-    .scroll-tall { height: 800vh; } /* Creates the scroll room */
-    
-    .sticky-center { 
-        position: sticky; 
-        top: 0; 
-        height: 100vh; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        overflow: hidden; 
-    }
-
-    .scene { 
-        position: absolute; 
-        opacity: 0; 
-        transition: opacity 0.5s; 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        width: 100%; 
-    }
-    
-    .scene.active { opacity: 1; }
-
-    /* 6. PAPER RIPPING EFFECT */
-    .rip-wrapper { position: relative; width: 400px; height: 400px; }
-    
-    .cover-half { 
-        position: absolute; 
-        width: 100%; 
-        height: 50%; 
-        background-size: cover; 
-        transition: transform 0.8s ease; 
-    }
-    
-    .top { 
-        top: 0; 
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 92%, 60% 100%, 40% 92%, 20% 100%, 0 92%); 
-    }
-    
-    .bottom { 
-        bottom: 0; 
-        clip-path: polygon(0 8%, 20% 0, 40% 8%, 60% 0, 80% 8%, 100% 0, 100% 100%, 0 100%); 
-    }
-    
-    .ripped .top { transform: translateY(-130%) rotate(-12deg); opacity: 0; }
-    .ripped .bottom { transform: translateY(130%) rotate(12deg); opacity: 0; }
-
-    .artist-reveal { 
-        position: absolute; 
-        z-index: -1; 
-        text-align: center; 
-        transform: scale(0.9); 
-        transition: 0.8s; 
-        opacity: 0; 
-    }
-    
-    .ripped + .artist-reveal { transform: scale(1); opacity: 1; }
-    .artist-reveal img { width: 350px; border-radius: 2px; }
-
-    @keyframes bounce { 
-        0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 
-        40% {transform: translateY(-10px);} 
-        60% {transform: translateY(-5px);} 
-    }
-</style>
+.modal-links a:hover { background: #121212; color: #e0e0e0; }

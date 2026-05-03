@@ -4,11 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artists | Paper Vinyl Records</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- ALL CSS IS NOW IN THIS BLOCK TO PREVENT "MISSING STYLE" ERRORS --- */
+        body { 
+            margin: 0; background: #121212; color: white; 
+            font-family: 'Courier New', Courier, monospace; 
+        }
+
+        /* NAVIGATION MENU */
+        #top-menu {
+            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
+            background: rgba(18, 18, 18, 0.85); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 50px; z-index: 300; box-sizing: border-box;
+        }
+        .nav-logo { height: 35px; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a:link, .nav-links a:visited { 
+            color: white !important; text-decoration: none; margin-left: 20px; 
+            text-transform: uppercase; font-size: 0.85rem; 
+        }
+        .nav-links a:hover { color: #00ff00 !important; }
+
+        /* DROPDOWN MENU */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; top: 100%; left: 20px;
+            background: rgba(18, 18, 18, 0.95); min-width: 160px;
+            border: 1px solid rgba(255, 255, 255, 0.1); z-index: 500;
+        }
+        .dropdown-content a { padding: 12px 16px; margin: 0 !important; display: block; font-size: 0.75rem; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* GRID LAYOUT */
+        .content-wrapper { padding: 120px 50px 50px; }
+        .page-title { text-transform: uppercase; letter-spacing: 4px; text-align: center; margin-bottom: 50px; }
+        .artist-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px; max-width: 1200px; margin: 0 auto;
+        }
+        .artist-card { cursor: pointer; text-align: center; transition: transform 0.3s ease; }
+        .artist-card:hover { transform: translateY(-10px); }
+        .artist-card img { width: 100%; aspect-ratio: 1/1; border-radius: 2px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        /* ZOOM MODAL (BIO POPUP) */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); z-index: 1000; justify-content: center; align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .modal-zoom-box {
+            background: #e0e0e0; color: #121212; width: 90%; max-width: 750px;
+            position: relative; padding: 30px; transition: 0.5s;
+            clip-path: polygon(1% 0%, 100% 2%, 99% 100%, 0% 97%);
+        }
+        .modal-zoom-box.active { transform: scale(1); opacity: 1; }
+        .modal-content { display: flex; gap: 30px; align-items: center; flex-wrap: wrap; }
+
+        #modal-img { 
+            width: 280px; height: 280px; object-fit: cover; 
+            border-radius: 2px; box-shadow: 10px 10px 0px #121212; 
+        }
+        .modal-info { flex: 1; min-width: 250px; }
+        
+        .close-btn { 
+            position: fixed; top: 30px; right: 40px; font-size: 50px; 
+            color: white; cursor: pointer; z-index: 1100; 
+        }
+
+        /* SVG ICONS */
+        .modal-links { margin-top: 20px; display: flex; gap: 20px; }
+        .modal-links a { width: 28px; height: 28px; transition: 0.2s; }
+        .modal-links svg { width: 100%; height: 100%; fill: #121212; }
+        .modal-links a:hover { transform: scale(1.2); }
+        .modal-links .spotify-icon:hover svg { fill: #1DB954; }
+        .modal-links .sc-icon:hover svg { fill: #FF5500; }
+        .modal-links .insta-icon:hover svg { fill: #E1306C; }
+    </style>
 </head>
 <body>
 
-<nav id="top-menu" class="visible">
+<nav id="top-menu">
     <img src="images /pvrtransparent.png" class="nav-logo">
     <div class="nav-links">
         <a href="index.html">Home</a>
@@ -27,33 +104,16 @@
 <div class="content-wrapper">
     <h1 class="page-title">The Roster</h1>
     <div class="artist-grid">
-        <div class="artist-card" onclick="openArtist('wilrhy')">
-            <img src="images /wilrhy.jpg" alt="WilRhy">
-            <h3>WilRhy</h3>
-        </div>
-        <div class="artist-card" onclick="openArtist('frostability')">
-            <img src="images /frostability.jpg" alt="Frostability">
-            <h3>Frostability</h3>
-        </div>
-        <div class="artist-card" onclick="openArtist('undyingbear')">
-            <img src="images /undyingbear.jpg" alt="undyingbear">
-            <h3>undyingbear</h3>
-        </div>
-        <div class="artist-card" onclick="openArtist('twistedanimations')">
-            <img src="images /twistedanimations.jpg" alt="TwistedAnimations">
-            <h3>TwistedAnimations</h3>
-        </div>
-        <div class="artist-card" onclick="openArtist('smitebite')">
-            <img src="images /smitebite.jpg" alt="SmiteBite">
-            <h3>SmiteBite</h3>
-        </div>
+        <div class="artist-card" onclick="openArtist('wilrhy')"><img src="images /wilrhy.jpg"><h3>WilRhy</h3></div>
+        <div class="artist-card" onclick="openArtist('frostability')"><img src="images /frostability.jpg"><h3>Frostability</h3></div>
+        <div class="artist-card" onclick="openArtist('undyingbear')"><img src="images /undyingbear.jpg"><h3>undyingbear</h3></div>
+        <div class="artist-card" onclick="openArtist('twistedanimations')"><img src="images /twistedanimations.jpg"><h3>TwistedAnimations</h3></div>
+        <div class="artist-card" onclick="openArtist('smitebite')"><img src="images /smitebite.jpg"><h3>SmiteBite</h3></div>
     </div>
 </div>
 
 <div id="artist-modal" class="modal-overlay">
-    <!-- Close button moved outside zoom-box for visibility -->
     <span class="close-btn" onclick="closeArtist()">&times;</span>
-    
     <div class="modal-zoom-box" id="modal-box">
         <div class="modal-content">
             <img id="modal-img" src="">

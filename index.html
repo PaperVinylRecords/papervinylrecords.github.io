@@ -5,25 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paper Vinyl Records</title>
     <style>
-        /* 1. FORCE LAYOUT TO STAY CENTERED */
         html, body {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #121212; color: white;
-            font-family: 'Courier New', Courier, monospace;
-            overflow-x: hidden;
+            margin: 0; padding: 0; width: 100%;
+            background-color: rgb(30, 45, 40); /* Initial Forest Green */
+            color: white; font-family: 'Courier New', Courier, monospace;
         }
 
-        /* The Stage stays fixed to the screen - it CANNOT move */
+        /* THE FIX: Entry screen now lets scroll pass through */
+        #entry-screen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
+            background: #121212; z-index: 1000; display: flex; 
+            flex-direction: column; justify-content: center; align-items: center; 
+            transition: opacity 0.8s ease;
+            pointer-events: none; /* CLICK AND SCROLL PASSES THROUGH */
+        }
+
+        /* Locked Stage */
         #stage {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             display: flex; align-items: center; justify-content: center;
             z-index: 10; pointer-events: none;
         }
 
-        /* This creates the scroll length */
-        #scroll-proxy { height: 1000vh; }
+        /* Long scroll room */
+        #scroll-proxy { height: 1000vh; width: 100%; }
 
-        /* 2. NAVIGATION (Forcing White Links) */
         #top-menu {
             position: fixed; top: -100px; left: 0; width: 100%; height: 80px;
             background: rgba(18, 18, 18, 0.95); backdrop-filter: blur(15px);
@@ -33,17 +39,12 @@
         }
         #top-menu.visible { top: 0; }
 
-        .nav-links a:link, .nav-links a:visited { 
-            color: white !important; text-decoration: none; margin-left: 25px; 
-            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
-        }
+        .nav-links a:link, .nav-links a:visited { color: white !important; text-decoration: none; margin-left: 25px; text-transform: uppercase; font-size: 0.8rem; }
         .nav-links a:hover { color: #00ff00 !important; }
 
         .label-logo { position: absolute; top: 30px; left: 30px; width: 120px; transition: 0.5s; opacity: 1; }
         .label-logo.hidden { opacity: 0; transform: translateY(-30px); }
-        .nav-logo { height: 45px; }
 
-        /* 3. THE SCENES */
         .scene {
             position: absolute; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -51,33 +52,17 @@
         }
         .scene.active { opacity: 1; visibility: visible; }
 
-        /* 4. THE RIP ANIMATION */
-        .rip-wrapper { position: relative; width: 380px; height: 380px; }
-        .cover-half { 
-            position: absolute; width: 100%; height: 50%; 
-            background-size: 380px 380px; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
+        /* Rip Animation */
+        .rip-wrapper { position: relative; width: 380px; height: 380px; pointer-events: none; }
+        .cover-half { position: absolute; width: 100%; height: 50%; background-size: 380px 380px; transition: transform 0.8s ease; }
         .top-half { top: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 85% 90%, 70% 100%, 50% 90%, 30% 100%, 0 90%); }
         .bottom-half { bottom: 0; clip-path: polygon(0 10%, 30% 0, 50% 10%, 70% 0, 85% 10%, 100% 0, 100% 100%, 0 100%); }
-        
         .ripped .top-half { transform: translateY(-130%) rotate(-8deg); }
         .ripped .bottom-half { transform: translateY(130%) rotate(8deg); }
 
-        .artist-reveal { 
-            position: absolute; z-index: -1; text-align: center; 
-            opacity: 0; transform: scale(0.85); transition: 0.8s; 
-        }
+        .artist-reveal { position: absolute; z-index: -1; text-align: center; opacity: 0; transform: scale(0.85); transition: 0.8s; }
         .ripped + .artist-reveal { opacity: 1; transform: scale(1); }
-        .artist-reveal img { width: 320px; border-radius: 4px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
-
-        /* 5. ENTRY SCREEN */
-        #entry-screen { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-            background: #121212; z-index: 1000; display: flex; 
-            flex-direction: column; justify-content: center; align-items: center; 
-            transition: opacity 1s; pointer-events: none;
-        }
-        .entry-content { text-align: center; }
+        .artist-reveal img { width: 320px; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -85,14 +70,12 @@
     <audio id="vinyl-crackle" src="crackle.mp3" loop></audio>
 
     <div id="entry-screen">
-        <div class="entry-content">
-            <h1 style="letter-spacing: 5px; font-weight: 300;">SCROLL TO ENTER</h1>
-            <p style="opacity: 0.5;">PAPER VINYL RECORDS</p>
-        </div>
+        <h1 style="letter-spacing: 5px;">SCROLL TO ENTER</h1>
+        <p style="opacity: 0.5;">PAPER VINYL RECORDS</p>
     </div>
 
     <nav id="top-menu">
-        <img src="images /pvrtransparent.png" class="nav-logo">
+        <img src="images /pvrtransparent.png" style="height: 45px;">
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="artists.html">Artists</a>
@@ -139,19 +122,17 @@
                 <div class="cover-half bottom-half" style="background-image:url('images /bfup.png')"></div>
             </div>
             <div class="artist-reveal">
-                <img src="images /frostability.jpg">
+                <img src="images /undyingbear.jpg">
                 <h2 style="font-size: 1.2rem;">FROSTABILITY & WILRHY</h2>
                 <p>present</p>
                 <h3>BFUP SOUNDTRACK</h3>
             </div>
         </div>
 
-        <!-- Final Scene -->
+        <!-- Final Contact -->
         <div class="scene">
             <h1 style="letter-spacing: 5px;">PAPER VINYL RECORDS</h1>
-            <p style="max-width: 400px; text-align: center; opacity: 0.8; line-height: 1.6;">
-                Placeholder description for the label. Add your contact info and label mission here.
-            </p>
+            <p style="opacity: 0.8; max-width: 400px; text-align: center;">Label Mission & Description Placeholder</p>
             <h3 style="margin-top: 30px;">papervinyl@musician.org</h3>
         </div>
     </div>

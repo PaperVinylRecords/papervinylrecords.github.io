@@ -5,39 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paper Vinyl Records</title>
     <style>
-        html, body { margin: 0; padding: 0; min-height: 100%; overflow-x: hidden; background-color: #121212; color: white; font-family: 'Courier New', Courier, monospace; }
+        /* 1. GLOBAL RESET */
+        html, body { 
+            margin: 0; padding: 0; min-height: 100%; overflow-x: hidden; 
+            background-color: #121212; color: white; 
+            font-family: 'Courier New', Courier, monospace; 
+        }
 
-        /* MENU LINK FIX (No Purple) */
+        /* 2. MENU STYLES (Fixed Link Colors) */
         #top-menu {
             position: fixed; top: -80px; left: 0; width: 100%; height: 70px;
-            background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            background: rgba(18, 18, 18, 0.85); backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 50px; z-index: 300; transition: top 0.6s ease; box-sizing: border-box;
         }
         #top-menu.visible { top: 0; }
-
         .nav-links a:link, .nav-links a:visited { color: white !important; text-decoration: none; margin-left: 20px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
         .nav-links a:hover { color: #aaa !important; }
 
-        /* STICKY LAYOUT FIX */
+        /* 3. STICKY STAGE (Locked to Center) */
         .scroll-tall { height: 1000vh; position: relative; }
-        .sticky-center { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; z-index: 10; }
+        .sticky-center {
+            position: sticky; top: 0; height: 100vh; width: 100%;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; z-index: 10;
+        }
 
         .scene {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 100%; height: auto; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden; transition: opacity 0.5s ease;
+            position: absolute; 
+            top: 50%; left: 50%; /* Center Point */
+            transform: translate(-50%, -50%); /* Offset Correction */
+            width: 100%; max-width: 800px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s;
         }
         .scene.active { opacity: 1; visibility: visible; }
 
-        .label-logo { position: absolute; top: 30px; left: 30px; width: 120px; z-index: 100; transition: opacity 0.5s ease, transform 0.5s ease; }
+        /* 4. ANIMATIONS & LOGO */
+        .label-logo { position: absolute; top: 30px; left: 30px; width: 120px; z-index: 100; transition: opacity 0.5s, transform 0.5s; }
         .label-logo.move-to-menu { opacity: 0; transform: translateY(-50px); }
         .nav-logo { height: 40px; opacity: 0; transition: 0.5s; }
+        #top-menu.visible .nav-logo { opacity: 1 !important; }
 
-        /* RIP ANIMATION */
+        /* PAPER RIP EFFECT */
         .rip-wrapper { position: relative; width: 400px; height: 400px; }
         .cover-half { position: absolute; width: 100%; height: 50%; background-size: cover; transition: transform 0.8s ease; }
+        /* Using single quotes for paths with spaces */
         .top { top: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 92%, 60% 100%, 40% 92%, 20% 100%, 0 92%); }
         .bottom { bottom: 0; clip-path: polygon(0 8%, 20% 0, 40% 8%, 60% 0, 80% 8%, 100% 0, 100% 100%, 0 100%); }
         .ripped .top { transform: translateY(-130%) rotate(-12deg); opacity: 0; }
@@ -47,6 +61,7 @@
         .ripped + .artist-reveal { transform: scale(1); opacity: 1; }
         .artist-reveal img { width: 350px; border-radius: 2px; }
 
+        /* ENTRY SCREEN (Resetable) */
         #entry-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 400; background: #121212; transition: opacity 0.6s ease; pointer-events: none; }
     </style>
 </head>
@@ -79,8 +94,8 @@
                 <div class="cover-half bottom" style="background-image:url('images /calmingdailyseries.png')"></div>
             </div>
             <div class="artist-reveal">
-                <img src="images /ARTIST_1_PHOTO.jpg">
-                <h2>ARTIST ONE</h2>
+                <img src="images /wilrhy.jpg">
+                <h2>WILRHY</h2>
                 <p>presents</p>
                 <h3>CALMING DAILY SERIES</h3>
             </div>
@@ -93,8 +108,8 @@
                 <div class="cover-half bottom" style="background-image:url('images /chaching.png')"></div>
             </div>
             <div class="artist-reveal">
-                <img src="images /ARTIST_2_PHOTO.jpg">
-                <h2>ARTIST TWO</h2>
+                <img src="images /frostability.jpg">
+                <h2>FROSTABILITY</h2>
                 <p>presents</p>
                 <h3>CHACHING</h3>
             </div>
@@ -107,8 +122,8 @@
                 <div class="cover-half bottom" style="background-image:url('images /bfup.png')"></div>
             </div>
             <div class="artist-reveal">
-                <img src="images /ARTIST_3_PHOTO.jpg">
-                <h2>ARTIST THREE</h2>
+                <img src="images /undyingbear.jpg">
+                <h2>UNDYINGBEAR</h2>
                 <p>presents</p>
                 <h3>BFUP</h3>
             </div>
@@ -117,7 +132,8 @@
         <!-- Final Scene -->
         <div class="scene">
             <h1>Paper Vinyl Records</h1>
-            <p>PLACEHOLDER CONTACT INFO</p>
+            <p>For inquiries and submissions, please reach out to our team via the placeholder below.</p>
+            <p>papervinyl@musician.org</p>
         </div>
     </div>
 </div>

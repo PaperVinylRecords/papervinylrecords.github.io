@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Vinyl Records | Under Construction</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            z-index: 2;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            opacity: 0.8;
+        }
+
+        .contact-link {
+            color: #00ff00; /* Neon Green from your logo */
+            text-decoration: none;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 2px;
+            transition: opacity 0.3s;
+        }
+
+        .contact-link:hover {
+            opacity: 0.6;
+        }
+
+        /* Subtle Vinyl Pulse Animation */
+        .vinyl-bg {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 1;
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { opacity: 0.1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vinyl-bg"></div>
+
+    <div class="container">
+        <h1>Under construction!</h1>
+        <p>
+            The new Paper Vinyl Records website is under construction at the moment.
+        </p>
+        <p>
+            Contact us at: <br>
+            <a href="mailto:papervinyl@musician.org" class="contact-link">papervinyl@musician.org</a>
+        </p>
+    </div>
+
+</body>
+</html>

@@ -15,7 +15,6 @@ window.addEventListener('scroll', () => {
         entryScreen.classList.remove('hide-entry');
     }
 
-    // Handle Artist Scenes and Ripping
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;
@@ -23,13 +22,15 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
-            // Trigger Logo Handoff on final scene
+            // Check if we are at the final Contact scene
             if (index === scenes.length - 1) {
+                // Fade and move the main logo
+                mainLogo.classList.add('move-to-menu');
+                // Drop the menu down
                 topMenu.classList.add('visible');
-                mainLogo.classList.add('fade-out');
             } else {
+                mainLogo.classList.remove('move-to-menu');
                 topMenu.classList.remove('visible');
-                mainLogo.classList.remove('fade-out');
             }
 
             const sceneProgress = (scrollFraction - start) / (end - start);

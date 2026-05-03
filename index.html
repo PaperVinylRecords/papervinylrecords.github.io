@@ -7,17 +7,17 @@
     <style>
         body { margin: 0; background: #121212; color: white; font-family: 'Courier New', Courier, monospace; }
         
-        /* NAVIGATION MENU (Hidden by default) */
+        /* NAVIGATION MENU */
         #top-menu {
             position: fixed;
-            top: -80px; /* Start off-screen */
+            top: -80px;
             left: 0;
             width: 100%;
             height: 70px;
             background: rgba(18, 18, 18, 0.95);
             border-bottom: 1px solid #333;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between; /* Space for Logo and Links */
             align-items: center;
             padding: 0 50px;
             z-index: 300;
@@ -25,12 +25,20 @@
             box-sizing: border-box;
         }
 
-        #top-menu.visible { top: 0; } /* Slide down when visible */
+        #top-menu.visible { top: 0; }
 
-        #top-menu a {
+        /* Small Logo inside Nav */
+        .nav-logo {
+            height: 40px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #top-menu.visible .nav-logo { opacity: 1; }
+
+        .nav-links a {
             color: white;
             text-decoration: none;
-            margin-left: 30px;
+            margin-left: 20px;
             text-transform: uppercase;
             font-size: 0.9rem;
             letter-spacing: 1px;
@@ -38,8 +46,19 @@
             padding: 5px 10px;
             transition: 0.3s;
         }
+        .nav-links a:hover { border: 1px solid white; background: white; color: black; }
 
-        #top-menu a:hover { border: 1px solid white; background: white; color: black; }
+        /* Main Logo Fade Out */
+        .label-logo {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 120px;
+            z-index: 100;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+            transition: opacity 0.5s ease-in-out;
+        }
+        .label-logo.fade-out { opacity: 0; pointer-events: none; }
 
         /* Existing Styles */
         #entry-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 200; background: #121212; transition: opacity 0.6s ease-out, visibility 0.6s; letter-spacing: 2px; text-transform: uppercase; }
@@ -49,7 +68,6 @@
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
         .scroll-tall { height: 800vh; }
         .sticky-center { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .label-logo { position: absolute; top: 30px; left: 30px; width: 120px; z-index: 100; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); }
         .scene { position: absolute; opacity: 0; transition: opacity 0.5s; display: flex; flex-direction: column; align-items: center; width: 100%; }
         .scene.active { opacity: 1; }
         .rip-wrapper { position: relative; width: 400px; height: 400px; }
@@ -65,12 +83,14 @@
 </head>
 <body>
 
-<!-- NAVIGATION MENU -->
 <nav id="top-menu">
-    <a href="index.html">Home</a>
-    <a href="artists.html">Artists</a>
-    <a href="releases.html">Releases</a>
-    <a href="shop.html">Shop</a>
+    <img src="images /pvrtransparent.png" class="nav-logo">
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="artists.html">Artists</a>
+        <a href="releases.html">Releases</a>
+        <a href="shop.html">Shop</a>
+    </div>
 </nav>
 
 <div id="entry-screen">
@@ -80,9 +100,10 @@
 
 <div class="scroll-tall">
     <div class="sticky-center">
-        <img src="images /pvrtransparent.png" class="label-logo">
+        <!-- Main Logo with ID for JS control -->
+        <img src="images /pvrtransparent.png" class="label-logo" id="main-logo">
 
-        <!-- Artist 1 -->
+        <!-- Artist Scenes -->
         <div class="scene">
             <div class="rip-wrapper">
                 <div class="cover-half top" style="background-image:url('images/ARTIST_1_COVER.jpg')"></div>
@@ -90,27 +111,25 @@
             </div>
             <div class="artist-reveal">
                 <img src="images/ARTIST_1_PHOTO.jpg">
-                <h2>WilRhy</h2>
+                <h2>ARTIST ONE</h2>
                 <h2>presents</h2>
-                <h2>The CALMING DAILY Series</h2>
+                <h2>ALBUM ONE</h2>
             </div>
         </div>
 
-        <!-- Artist 2 -->
         <div class="scene">
             <div class="rip-wrapper">
                 <div class="cover-half top" style="background-image:url('images/ARTIST_2_COVER.jpg')"></div>
                 <div class="cover-half bottom" style="background-image:url('images/ARTIST_2_COVER.jpg')"></div>
             </div>
             <div class="artist-reveal">
-                <img src="images /ab67616d0000b273eba03eaa6fa7dffc9f529792.jfif">
-                <h2>TwistedAnimations</h2>
+                <img src="images/ARTIST_2_PHOTO.jpg">
+                <h2>ARTIST TWO</h2>
                 <h2>presents</h2>
-                <h2>Cha-Ching!</h2>
+                <h2>ALBUM TWO</h2>
             </div>
         </div>
 
-        <!-- Artist 3 -->
         <div class="scene">
             <div class="rip-wrapper">
                 <div class="cover-half top" style="background-image:url('images/ARTIST_3_COVER.jpg')"></div>
@@ -124,8 +143,8 @@
             </div>
         </div>
 
-        <!-- Contact Section (End of Animation) -->
-        <div class="scene" id="final-contact">
+        <!-- Contact Section -->
+        <div class="scene">
             <h1>Paper Vinyl Records</h1>
             <p>Demos: papervinyl@musician.org</p>
         </div>

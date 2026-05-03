@@ -2,15 +2,14 @@ const scenes = document.querySelectorAll('.scene');
 const entryScreen = document.getElementById('entry-screen');
 const topMenu = document.getElementById('top-menu');
 const mainLogo = document.getElementById('main-logo');
-const navLogo = document.querySelector('.nav-logo');
 const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
 
-// Album-inspired color palette
+// Calming Palette sampled from your covers
 const colors = [
     {r: 35, g: 55, b: 45},   // Calming Daily Series (Soft Forest)
-    {r: 50, g: 45, b: 30},   // ChaChing (Muted Gold/Dark)
+    {r: 50, g: 45, b: 30},   // ChaChing (Muted Gold)
     {r: 60, g: 20, b: 20},   // BFUP (Deep Muted Red)
     {r: 18, g: 18, b: 18}    // Final Black
 ];
@@ -31,8 +30,10 @@ window.addEventListener('scroll', () => {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollFraction = totalHeight > 0 ? scrollY / totalHeight : 0;
 
+    // 1. Color Logic
     document.body.style.backgroundColor = lerpColor(scrollFraction);
 
+    // 2. Entry Screen Logic (Reset when scrolling back up)
     if (scrollY > 50) {
         entryScreen.style.opacity = '0';
         if (!audioStarted) {
@@ -40,8 +41,11 @@ window.addEventListener('scroll', () => {
             crackle.play().catch(() => {});
             audioStarted = true;
         }
+    } else {
+        entryScreen.style.opacity = '1'; // Show again at the very top
     }
 
+    // 3. Scene and Animation Logic
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;
@@ -49,16 +53,16 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
+            // Final Handoff
             if (index === scenes.length - 1) {
                 mainLogo.classList.add('move-to-menu');
                 topMenu.classList.add('visible');
-                if(navLogo) navLogo.style.opacity = '1';
             } else {
                 mainLogo.classList.remove('move-to-menu');
                 topMenu.classList.remove('visible');
-                if(navLogo) navLogo.style.opacity = '0';
             }
 
+            // Rip Timing
             const sceneProgress = (scrollFraction - start) / (end - start);
             const rip = scene.querySelector('.rip-wrapper');
             if (rip && sceneProgress > 0.4) rip.classList.add('ripped');

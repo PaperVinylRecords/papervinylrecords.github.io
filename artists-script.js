@@ -6,7 +6,7 @@ const artistData = {
         spotify: 'https://spotify.com',
         soundcloud: '',
         insta: 'https://instagram.com',
-        twitter: '' // ADD TWITTER URL HERE
+        twitter: '' 
     },
     'frostability': {
         name: 'Frostability',
@@ -15,7 +15,7 @@ const artistData = {
         spotify: 'https://spotify.com',
         soundcloud: '',
         insta: 'https://instagram.com',
-        twitter: '' // ADD TWITTER URL HERE
+        twitter: '' 
     },
     'undyingbear': {
         name: 'undyingbear',
@@ -24,7 +24,7 @@ const artistData = {
         spotify: 'https://spotify.com',
         soundcloud: '',
         insta: 'https://instagram.com',
-        twitter: '' // ADD TWITTER URL HERE
+        twitter: '' 
     },
     'twistedanimations': {
         name: 'TwistedAnimations',
@@ -33,7 +33,7 @@ const artistData = {
         spotify: 'https://spotify.com',
         soundcloud: '',
         insta: '',
-        twitter: '' // ADD TWITTER URL HERE
+        twitter: '' 
     },
     'smitebite': {
         name: 'SmiteBite',
@@ -42,7 +42,7 @@ const artistData = {
         spotify: '',
         soundcloud: 'https://soundcloud.com',
         insta: '',
-        twitter: '' // ADD TWITTER URL HERE
+        twitter: '' 
     }
 };
 

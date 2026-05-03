@@ -1,72 +1,71 @@
 const scenes = document.querySelectorAll('.scene');
-const entryScreen = document.getElementById('entry-screen');
-const topMenu = document.getElementById('top-menu');
-const mainLogo = document.getElementById('main-logo');
+const entry = document.getElementById('entry-screen');
+const menu = document.getElementById('top-menu');
+const logo = document.getElementById('main-logo');
 const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
 
-// Calming Palette sampled from your covers
 const colors = [
-    {r: 35, g: 55, b: 45},   // Calming Daily Series (Soft Forest)
-    {r: 50, g: 45, b: 30},   // ChaChing (Muted Gold)
-    {r: 60, g: 20, b: 20},   // BFUP (Deep Muted Red)
-    {r: 18, g: 18, b: 18}    // Final Black
+    {r: 35, g: 55, b: 45},   // Forest
+    {r: 50, g: 45, b: 30},   // Gold/Chaching
+    {r: 60, g: 20, b: 20},   // Red/BFUP
+    {r: 18, g: 18, b: 18}    // Black
 ];
 
-function lerpColor(f) {
-    const section = f * (colors.length - 1);
-    const i = Math.floor(section);
-    const next = Math.min(i + 1, colors.length - 1);
-    const localF = section - i;
-    const r = Math.round(colors[i].r + (colors[next].r - colors[i].r) * localF);
-    const g = Math.round(colors[i].g + (colors[next].g - colors[i].g) * localF);
-    const b = Math.round(colors[i].b + (colors[next].b - colors[i].b) * localF);
-    return `rgb(${r}, ${g}, ${b})`;
-}
-
 window.addEventListener('scroll', () => {
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollFraction = totalHeight > 0 ? scrollY / totalHeight : 0;
+    const y = window.scrollY;
+    const max = document.body.scrollHeight - window.innerHeight;
+    const fraction = y / max;
 
-    // 1. Color Logic
-    document.body.style.backgroundColor = lerpColor(scrollFraction);
-
-    // 2. Entry Screen Logic (Reset when scrolling back up)
-    if (scrollY > 50) {
-        entryScreen.style.opacity = '0';
+    // 1. Entry Screen & Audio
+    if (y > 50) {
+        entry.style.opacity = '0';
+        entry.style.pointerEvents = 'none';
         if (!audioStarted) {
             crackle.volume = 0.2;
             crackle.play().catch(() => {});
             audioStarted = true;
         }
     } else {
-        entryScreen.style.opacity = '1'; // Show again at the very top
+        entry.style.opacity = '1';
+        entry.style.pointerEvents = 'all';
     }
 
-    // 3. Scene and Animation Logic
+    // 2. Background Colors
+    const section = fraction * (colors.length - 1);
+    const i = Math.floor(section);
+    const next = Math.min(i + 1, colors.length - 1);
+    const localF = section - i;
+    const r = Math.round(colors[i].r + (colors[next].r - colors[i].r) * localF);
+    const g = Math.round(colors[i].g + (colors[next].g - colors[i].g) * localF);
+    const b = Math.round(colors[i].b + (colors[next].b - colors[i].b) * localF);
+    document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+
+    // 3. Scene Logic
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;
 
-        if (scrollFraction >= start && scrollFraction < end) {
+        if (fraction >= start && fraction < end) {
             scene.classList.add('active');
             
-            // Final Handoff
+            // Logic for Logo/Menu handoff in the very last scene
             if (index === scenes.length - 1) {
-                mainLogo.classList.add('move-to-menu');
-                topMenu.classList.add('visible');
+                menu.classList.add('visible');
+                logo.classList.add('hidden');
             } else {
-                mainLogo.classList.remove('move-to-menu');
-                topMenu.classList.remove('visible');
+                menu.classList.remove('visible');
+                logo.classList.remove('hidden');
             }
 
-            // Rip Timing
-            const sceneProgress = (scrollFraction - start) / (end - start);
+            // Rip logic
+            const progress = (fraction - start) / (end - start);
             const rip = scene.querySelector('.rip-wrapper');
-            if (rip && sceneProgress > 0.4) rip.classList.add('ripped');
-            else if (rip) rip.classList.remove('ripped');
+            if (rip) {
+                if (progress > 0.4) rip.classList.add('ripped');
+                else rip.classList.remove('ripped');
+            }
         } else {
             scene.classList.remove('active');
         }

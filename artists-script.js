@@ -1,53 +1,38 @@
 const artistData = {
-    'wilrhy': {
-        name: 'WilRhy',
-        desc: 'WilRhy brings a signature blend of lo-fi textures and heavy vinyl influence to the Paper Vinyl roster.',
-        spotify: 'https://spotify.com',
-        insta: 'https://instagram.com'
-    },
-    'frostability': {
-        name: 'Frostability',
-        desc: 'Known for chilling atmospheres and crisp production, Frostability is a staple of the underground scene.',
-        spotify: 'https://spotify.com',
-        insta: 'https://instagram.com'
-    },
-    'undyingbear': {
-        name: 'undyingbear',
-        desc: 'Experimental beats that refuse to quit. undyingbear pushes the boundaries of traditional genre lines.',
-        spotify: 'https://spotify.com',
-        insta: 'https://instagram.com'
-    },
-    'twistedanimations': {
-        name: 'TwistedAnimations',
-        desc: 'Visual and auditory chaos. TwistedAnimations creates immersive worlds within every track.',
-        spotify: 'https://spotify.com',
-        insta: 'https://instagram.com'
-    },
-    'smitebite': {
-        name: 'SmiteBite',
-        desc: 'Aggressive, raw, and unapologetic. SmiteBite delivers high-energy sounds that leave an impact.',
-        spotify: 'https://spotify.com',
-        insta: 'https://instagram.com'
-    }
+    'wilrhy': { name: 'WilRhy', desc: '', img: 'images/wilrhy.jpg', spotify: '#', insta: '#' },
+    'frostability': { name: 'Frostability', desc: '', img: 'images/frostability.jpg', spotify: '#', insta: '#' },
+    'undyingbear': { name: 'undyingbear', desc: '', img: 'images/undyingbear.jpg', spotify: '#', insta: '#' },
+    'twistedanimations': { name: 'TwistedAnimations', desc: '', img: 'images/twistedanimations.jpg', spotify: '#', insta: '#' },
+    'smitebite': { name: 'SmiteBite', desc: '', img: 'images/smitebite.jpg', spotify: '#', insta: '#' }
 };
 
-function openArtist(id) {
-    const data = artistData[id];
-    document.getElementById('modal-name').innerText = data.name;
-    document.getElementById('modal-desc').innerText = data.desc;
-    document.getElementById('modal-spotify').href = data.spotify;
-    document.getElementById('modal-insta').href = data.insta;
-    document.getElementById('artist-modal').style.display = 'block';
-}
+const modal = document.getElementById('artist-modal');
+const modalBox = document.getElementById('modal-box');
+const cards = document.querySelectorAll('.artist-card');
 
-function closeArtist() {
-    document.getElementById('artist-modal').style.display = 'none';
-}
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        const id = card.getAttribute('data-id');
+        const data = artistData[id];
+        
+        // Fill modal data
+        document.getElementById('modal-name').innerText = data.name;
+        document.getElementById('modal-desc').innerText = data.desc;
+        document.getElementById('modal-img').src = data.img;
+        
+        // Open and animate
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modalBox.classList.add('active');
+        }, 10);
+    });
+});
 
-// Close modal if user clicks outside of the box
-window.onclick = function(event) {
-    let modal = document.getElementById('artist-modal');
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
+document.getElementById('close-modal').addEventListener('click', closeModal);
+
+function closeModal() {
+    modalBox.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 500); // Wait for zoom-out animation
 }

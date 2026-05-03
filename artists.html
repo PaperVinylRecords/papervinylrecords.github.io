@@ -9,7 +9,8 @@
 <body>
 
 <nav id="top-menu" class="visible">
-    <img src="images/pvrtransparent.png" class="nav-logo">
+    <!-- Updated logo path with the space after 'images' -->
+    <img src="images /pvrtransparent.png" class="nav-logo">
     <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="artists.html">Artists</a>
@@ -21,11 +22,35 @@
 <div class="content-wrapper">
     <h1 class="page-title">The Roster</h1>
     <div class="artist-grid">
+        <!-- WilRhy: Simplified card (no extra gallery div) -->
         <div class="artist-card" onclick="openArtist('wilrhy')">
             <img src="images/wilrhy.jpg" alt="WilRhy">
             <h3>WilRhy</h3>
         </div>
-        <!-- Repeat for Frostability, undyingbear, TwistedAnimations, SmiteBite -->
+
+        <!-- Frostability -->
+        <div class="artist-card" onclick="openArtist('frostability')">
+            <img src="images/frostability.jpg" alt="Frostability">
+            <h3>Frostability</h3>
+        </div>
+
+        <!-- undyingbear -->
+        <div class="artist-card" onclick="openArtist('undyingbear')">
+            <img src="images/undyingbear.jpg" alt="undyingbear">
+            <h3>undyingbear</h3>
+        </div>
+
+        <!-- TwistedAnimations -->
+        <div class="artist-card" onclick="openArtist('twistedanimations')">
+            <img src="images/twistedanimations.jpg" alt="TwistedAnimations">
+            <h3>TwistedAnimations</h3>
+        </div>
+
+        <!-- SmiteBite -->
+        <div class="artist-card" onclick="openArtist('smitebite')">
+            <img src="images/smitebite.jpg" alt="SmiteBite">
+            <h3>SmiteBite</h3>
+        </div>
     </div>
 </div>
 

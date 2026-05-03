@@ -1,3 +1,8 @@
+// Force the browser to start at the top on every refresh
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
 const scenes = document.querySelectorAll('.scene');
 const entryScreen = document.getElementById('entry-screen');
 const topMenu = document.getElementById('top-menu');
@@ -18,32 +23,36 @@ const colors = [
 ];
 
 window.addEventListener('scroll', () => {
-    // UPDATED: Use documentElement for more reliable height sensing
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    
-    // Safety check to prevent division by zero
     const scrollFraction = totalHeight > 0 ? scrollY / totalHeight : 0;
 
-    // 1. Force Entry Screen to hide
-    if (scrollY > 50) {
+    // 1. Aggressive Entry Screen Removal
+    if (scrollY > 30) {
         entryScreen.style.opacity = '0';
         entryScreen.style.visibility = 'hidden';
+        
+        // Start Audio once scrolling begins
+        if (!audioStarted) {
+            crackle.currentTime = loopStart;
+            crackle.play().catch(e => console.log("Audio waiting for interaction"));
+            audioStarted = true;
+        }
     } else {
         entryScreen.style.opacity = '1';
         entryScreen.style.visibility = 'visible';
     }
 
-    // 2. Audio & Colors
-    if (!audioStarted && scrollY > 20) {
-        crackle.play().catch(() => {}); // Catch prevents errors if browser blocks auto-play
-        audioStarted = true;
+    // 2. Loop Audio virtually
+    if (crackle.currentTime >= loopEnd) {
+        crackle.currentTime = loopStart;
     }
-    
+
+    // 3. Background Color Shift
     const colorIndex = Math.min(Math.floor(scrollFraction * colors.length), colors.length - 1);
     document.body.style.background = `linear-gradient(135deg, ${colors[colorIndex].start}, ${colors[colorIndex].end})`;
 
-    // 3. Scene Handling
+    // 4. Scene Handling (Artists & Album presentations)
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;
@@ -51,7 +60,7 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
-            // Logic for Logo/Menu handoff
+            // Logo handoff at the end
             if (index === scenes.length - 1) {
                 mainLogo.classList.add('move-to-menu');
                 topMenu.classList.add('visible');
@@ -64,10 +73,11 @@ window.addEventListener('scroll', () => {
                 if(navLogo) navLogo.style.opacity = '0';
             }
 
+            // Paper Ripping logic
             const sceneProgress = (scrollFraction - start) / (end - start);
             const ripWrapper = scene.querySelector('.rip-wrapper');
             if (ripWrapper) {
-                if (sceneProgress > 0.3) {
+                if (sceneProgress > 0.35) {
                     ripWrapper.classList.add('ripped');
                 } else {
                     ripWrapper.classList.remove('ripped');

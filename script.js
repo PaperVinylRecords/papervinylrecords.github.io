@@ -7,16 +7,11 @@ const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
 
-// --- AUDIO CONFIGURATION ---
-const loopStart = 2; // Start of loop (seconds)
-const loopEnd = 12;  // End of loop (seconds)
-
-// --- LOGO COLOR PALETTE (RGB) ---
 const colors = [
     {r: 12, g: 34, b: 31},   // Dark Forest Green
     {r: 0, g: 255, b: 0},    // Neon Green
     {r: 224, g: 224, b: 224},// Paper Grey
-    {r: 18, g: 18, b: 18}    // Final Deep Black
+    {r: 18, g: 18, b: 18}    // Deep Black
 ];
 
 function lerpColor(f) {
@@ -31,38 +26,25 @@ function lerpColor(f) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-// Set initial color immediately
-document.body.style.backgroundColor = `rgb(${colors[0].r}, ${colors[0].g}, ${colors[0].b})`;
-
 window.addEventListener('scroll', () => {
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollFraction = totalHeight > 0 ? scrollY / totalHeight : 0;
 
-    // 1. UPDATE SMOOTH BACKGROUND COLOR
+    // 1. Background Color
     document.body.style.backgroundColor = lerpColor(scrollFraction);
 
-    // 2. ENTRY SCREEN & AUDIO START
+    // 2. Hide Entry Screen & Start Audio
     if (scrollY > 50) {
         entryScreen.style.opacity = '0';
-        entryScreen.style.visibility = 'hidden';
-        
         if (!audioStarted) {
-            crackle.currentTime = loopStart;
-            crackle.play().catch(() => console.log("Audio waiting for interaction"));
+            crackle.volume = 0.2;
+            crackle.play().catch(() => {});
             audioStarted = true;
         }
-    } else {
-        entryScreen.style.opacity = '1';
-        entryScreen.style.visibility = 'visible';
     }
 
-    // 3. VIRTUAL AUDIO LOOP
-    if (crackle.currentTime >= loopEnd) {
-        crackle.currentTime = loopStart;
-    }
-
-    // 4. SCENE HANDLING (RIP & LOGO HANDOFF)
+    // 3. Scene and Logo Management
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;
@@ -70,36 +52,25 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
-            // IF FINAL CONTACT SCENE
+            // LOGO HANDOFF: Only happen in the very last section
             if (index === scenes.length - 1) {
-                // Fade out crackle static
-                if (crackle.volume > 0.01) crackle.volume -= 0.01;
-                else crackle.pause();
-
-                topMenu.classList.add('visible');
                 mainLogo.classList.add('move-to-menu');
-                if(navLogo) navLogo.style.opacity = '1';
+                topMenu.classList.add('visible');
             } else {
-                // Keep crackle active during artists
-                if (audioStarted && crackle.volume < 0.25) crackle.volume += 0.01;
-                
-                topMenu.classList.remove('visible');
                 mainLogo.classList.remove('move-to-menu');
-                if(navLogo) navLogo.style.opacity = '0';
+                topMenu.classList.remove('visible');
             }
 
-            // RIP TIMING
+            // RIP LOGIC
             const sceneProgress = (scrollFraction - start) / (end - start);
             const rip = scene.querySelector('.rip-wrapper');
-            if (rip) {
-                if (sceneProgress > 0.35) rip.classList.add('ripped');
-                else rip.classList.remove('ripped');
-            }
+            if (rip && sceneProgress > 0.4) rip.classList.add('ripped');
+            else if (rip) rip.classList.remove('ripped');
+
         } else {
             scene.classList.remove('active');
         }
     });
 });
 
-// FILL IN THIS LINE: console.log("Paper Vinyl Records Script Loaded Successfully!");
-console.log("PVR Script Loaded Unsuccessfully (jk)")
+console.log("Paper Vinyl Records Script Fully Loaded. (kill me)");

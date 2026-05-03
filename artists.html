@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- PERSISTENT MENU (Always Visible) -->
 <nav id="top-menu" class="visible">
     <img src="images/pvrtransparent.png" class="nav-logo">
     <div class="nav-links">
@@ -24,41 +23,57 @@
     
     <div class="artist-grid">
         <!-- Artist 1 -->
-        <div class="artist-card">
-            <div class="sleeve-overlay"></div>
+        <div class="artist-card" onclick="openArtist('wilrhy')">
+            <div class="paper-grain"></div>
             <img src="images/wilrhy.jpg" alt="WilRhy">
             <h3>WilRhy</h3>
         </div>
 
         <!-- Artist 2 -->
-        <div class="artist-card">
-            <div class="sleeve-overlay"></div>
+        <div class="artist-card" onclick="openArtist('frostability')">
+            <div class="paper-grain"></div>
             <img src="images/frostability.jpg" alt="Frostability">
             <h3>Frostability</h3>
         </div>
 
         <!-- Artist 3 -->
-        <div class="artist-card">
-            <div class="sleeve-overlay"></div>
+        <div class="artist-card" onclick="openArtist('undyingbear')">
+            <div class="paper-grain"></div>
             <img src="images/undyingbear.jpg" alt="undyingbear">
             <h3>undyingbear</h3>
         </div>
 
         <!-- Artist 4 -->
-        <div class="artist-card">
-            <div class="sleeve-overlay"></div>
+        <div class="artist-card" onclick="openArtist('twistedanimations')">
+            <div class="paper-grain"></div>
             <img src="images/twistedanimations.jpg" alt="TwistedAnimations">
             <h3>TwistedAnimations</h3>
         </div>
 
         <!-- Artist 5 -->
-        <div class="artist-card">
-            <div class="sleeve-overlay"></div>
+        <div class="artist-card" onclick="openArtist('smitebite')">
+            <div class="paper-grain"></div>
             <img src="images/smitebite.jpg" alt="SmiteBite">
             <h3>SmiteBite</h3>
         </div>
     </div>
 </div>
 
+<!-- THE MODAL (Pop-up) -->
+<div id="artist-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeArtist()">&times;</span>
+        <div class="modal-body">
+            <h2 id="modal-name">Artist Name</h2>
+            <p id="modal-desc">Artist description goes here...</p>
+            <div class="modal-links">
+                <a href="#" id="modal-spotify" target="_blank">Spotify</a>
+                <a href="#" id="modal-insta" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="artists-script.js"></script>
 </body>
 </html>

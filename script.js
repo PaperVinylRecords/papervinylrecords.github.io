@@ -1,6 +1,7 @@
 const scenes = document.querySelectorAll('.scene');
 const entryScreen = document.getElementById('entry-screen');
 const topMenu = document.getElementById('top-menu');
+const mainLogo = document.getElementById('main-logo');
 
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
@@ -22,11 +23,13 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
-            // Check if this is the LAST scene (Contact Section)
+            // Trigger Logo Handoff on final scene
             if (index === scenes.length - 1) {
                 topMenu.classList.add('visible');
+                mainLogo.classList.add('fade-out');
             } else {
                 topMenu.classList.remove('visible');
+                mainLogo.classList.remove('fade-out');
             }
 
             const sceneProgress = (scrollFraction - start) / (end - start);

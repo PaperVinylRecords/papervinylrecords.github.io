@@ -1,7 +1,7 @@
 const artistData = {
     'wilrhy': { name: 'WilRhy', desc: "WilRhy is an instrumentalist, producer, and composer and is the founder of Paper Vinyl Records.", img: 'images /wilrhy.jpg', spotify: 'https://open.spotify.com/artist/1b29I5ZHtYsY0QF2NDxAai?si=zlRe7E-3RzOalCP86uNexA', soundcloud: 'https://soundcloud.com/wilrhy', insta: 'https://instagram.com/kirbdevpublic' },
     'frostability': { name: 'Frostability', desc: "", img: 'images /frostability.jpg', spotify: 'https://open.spotify.com/artist/6Pnqtln6eh4XN3dOTz82h0?si=EBklKxGkS4uuQBLygW6Qew', soundcloud: '', insta: 'https://instagram.com/aydensstuff' },
-    'undyingbear': { name: 'undyingbear', desc: "", img: 'images /undyingbear.jpg', spotify: 'https://open.spotify.com/artist/3sLlAACq5X1c0tey9Um4iR?si=I2KMKaGqSFGakGAnjb5w5A', soundcloud: '', insta: 'https://instagram.com/JudeGehrkeBowling' },
+    'undyingbear': { name: 'undyingbear', desc: "", img: 'images /undyingbear.jpg', spotify: 'https://open.spotify.com/artist/3sLlAACq5X1c0tey9Um4iR?si=I2KMKaGqSFGakGAnjb5w5A', soundcloud: '', insta: 'https://instagram.com/jude_gehrke_bowling' },
     'twistedanimations': { name: 'TwistedAnimations', desc: "", img: 'images /twistedanimations.jpg', spotify: 'https://open.spotify.com/artist/0lvJH8oBsZd5XqF0ETI3TD?si=EQ23NQDrTO2e2V7v2yXRYw', soundcloud: '', insta: '' },
     'smitebite': { name: 'SmiteBite', desc: "", img: 'images /smitebite.jpg', spotify: '', soundcloud: 'https://soundcloud.com/smitebite-music-14261925', insta: '' }
 };

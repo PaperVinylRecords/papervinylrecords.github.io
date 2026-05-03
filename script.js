@@ -2,17 +2,18 @@ const scenes = document.querySelectorAll('.scene');
 const entryScreen = document.getElementById('entry-screen');
 const topMenu = document.getElementById('top-menu');
 const mainLogo = document.getElementById('main-logo');
+const navLogo = document.querySelector('.nav-logo'); // TARGET THE NAV LOGO
 const crackle = document.getElementById('vinyl-crackle');
 
 let audioStarted = false;
 const loopStart = 2; 
 const loopEnd = 12; 
 
-// Logo-inspired palette (Dark Forest, Neon Green, Paper Grey, Deep Black)
+// Logo-inspired palette
 const colors = [
     {r: 12, g: 34, b: 31},   // Dark Forest
-    {r: 0, g: 255, b: 0},    // Neon Green (Center Ring)
-    {r: 224, g: 224, b: 224},// Paper Grey (Texture)
+    {r: 0, g: 255, b: 0},    // Neon Green
+    {r: 224, g: 224, b: 224},// Paper Grey
     {r: 18, g: 18, b: 18}    // Deep Black
 ];
 
@@ -28,18 +29,12 @@ function lerpColor(f) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-// CRITICAL: Set initial background color immediately on load
+// FIX: Set background color IMMEDIATELY on script load
 document.body.style.backgroundColor = `rgb(${colors[0].r}, ${colors[0].g}, ${colors[0].b})`;
 
 window.addEventListener('scroll', () => {
-    // Robust scroll position detection
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    const totalHeight = Math.max(
-        document.body.scrollHeight, document.documentElement.scrollHeight,
-        document.body.offsetHeight, document.documentElement.offsetHeight,
-        document.body.clientHeight, document.documentElement.clientHeight
-    ) - window.innerHeight;
-    
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollFraction = totalHeight > 0 ? scrollY / totalHeight : 0;
 
     // 1. Smooth Background Update
@@ -49,20 +44,9 @@ window.addEventListener('scroll', () => {
     if (scrollY > 50) {
         entryScreen.style.opacity = '0';
         entryScreen.style.visibility = 'hidden';
-    } else {
-        entryScreen.style.opacity = '1';
-        entryScreen.style.visibility = 'visible';
     }
 
-    // 3. Audio & Scene Handling
-    if (!audioStarted && scrollY > 20) {
-        crackle.currentTime = loopStart;
-        crackle.play().catch(() => {});
-        audioStarted = true;
-    }
-    
-    if (crackle.currentTime >= loopEnd) crackle.currentTime = loopStart;
-
+    // 3. Scene Handling
     scenes.forEach((scene, index) => {
         const start = index / scenes.length;
         const end = (index + 1) / scenes.length;
@@ -70,25 +54,21 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
-            // Handle final contact scene and static fade-out
             if (index === scenes.length - 1) {
-                if (crackle.volume > 0.01) crackle.volume -= 0.01;
-                else crackle.pause();
-                topMenu.classList.add('visible');
+                // FADE OUT MAIN, FADE IN NAV LOGO
                 mainLogo.classList.add('move-to-menu');
+                topMenu.classList.add('visible');
+                if(navLogo) navLogo.style.opacity = '1'; 
             } else {
-                if (audioStarted && crackle.volume < 0.25) crackle.volume += 0.01;
-                topMenu.classList.remove('visible');
                 mainLogo.classList.remove('move-to-menu');
+                topMenu.classList.remove('visible');
+                if(navLogo) navLogo.style.opacity = '0';
             }
 
-            // Paper Ripping
             const sceneProgress = (scrollFraction - start) / (end - start);
             const rip = scene.querySelector('.rip-wrapper');
-            if (rip) {
-                if (sceneProgress > 0.35) rip.classList.add('ripped');
-                else rip.classList.remove('ripped');
-            }
+            if (rip && sceneProgress > 0.35) rip.classList.add('ripped');
+            else if (rip) rip.classList.remove('ripped');
         } else {
             scene.classList.remove('active');
         }

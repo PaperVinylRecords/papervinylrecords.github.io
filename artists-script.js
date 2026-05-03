@@ -1,38 +1,39 @@
 const artistData = {
-    'wilrhy': { name: 'WilRhy', desc: '', img: 'images/wilrhy.jpg', spotify: '#', insta: '#' },
-    'frostability': { name: 'Frostability', desc: '', img: 'images/frostability.jpg', spotify: '#', insta: '#' },
-    'undyingbear': { name: 'undyingbear', desc: '', img: 'images/undyingbear.jpg', spotify: '#', insta: '#' },
-    'twistedanimations': { name: 'TwistedAnimations', desc: '', img: 'images/twistedanimations.jpg', spotify: '#', insta: '#' },
-    'smitebite': { name: 'SmiteBite', desc: '', img: 'images/smitebite.jpg', spotify: '#', insta: '#' }
+    'wilrhy': { name: 'WilRhy', desc: 'WilRhy brings heavy vinyl influence to the Paper Vinyl roster.', img: 'images/wilrhy.jpg' },
+    // Add others here...
 };
 
-const modal = document.getElementById('artist-modal');
-const modalBox = document.getElementById('modal-box');
-const cards = document.querySelectorAll('.artist-card');
+let typingTimer;
+function typeWriter(text, i, element) {
+    if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        typingTimer = setTimeout(() => typeWriter(text, i + 1, element), 40);
+    }
+}
 
-cards.forEach(card => {
-    card.addEventListener('click', () => {
-        const id = card.getAttribute('data-id');
-        const data = artistData[id];
-        
-        // Fill modal data
-        document.getElementById('modal-name').innerText = data.name;
-        document.getElementById('modal-desc').innerText = data.desc;
-        document.getElementById('modal-img').src = data.img;
-        
-        // Open and animate
-        modal.style.display = 'flex';
-        setTimeout(() => {
-            modalBox.classList.add('active');
-        }, 10);
-    });
-});
+function openArtist(id) {
+    const data = artistData[id];
+    const modal = document.getElementById('artist-modal');
+    const box = document.getElementById('modal-box');
+    const desc = document.getElementById('modal-desc');
 
-document.getElementById('close-modal').addEventListener('click', closeModal);
+    document.getElementById('modal-name').innerText = data.name;
+    document.getElementById('modal-img').src = data.img;
+    desc.innerHTML = ""; // Clear for typing
+    clearTimeout(typingTimer);
 
-function closeModal() {
-    modalBox.classList.remove('active');
+    modal.style.display = 'flex';
     setTimeout(() => {
-        modal.style.display = 'none';
-    }, 500); // Wait for zoom-out animation
+        box.classList.add('active');
+        // Start typing after zoom finishes
+        setTimeout(() => typeWriter(data.desc, 0, desc), 500);
+    }, 10);
+}
+
+function closeArtist() {
+    const box = document.getElementById('modal-box');
+    box.classList.remove('active');
+    setTimeout(() => {
+        document.getElementById('artist-modal').style.display = 'none';
+    }, 500);
 }

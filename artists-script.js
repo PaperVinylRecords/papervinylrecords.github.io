@@ -1,7 +1,7 @@
 const artistData = {
     'wilrhy': {
         name: 'WilRhy',
-        desc: '', // Write your description here
+        desc: "", // TYPE YOUR BIO HERE
         img: 'images /wilrhy.jpg',
         spotify: 'https://spotify.com',
         soundcloud: '',
@@ -9,7 +9,7 @@ const artistData = {
     },
     'frostability': {
         name: 'Frostability',
-        desc: '', // Write your description here
+        desc: "", // TYPE YOUR BIO HERE
         img: 'images /frostability.jpg',
         spotify: 'https://spotify.com',
         soundcloud: '',
@@ -17,7 +17,7 @@ const artistData = {
     },
     'undyingbear': {
         name: 'undyingbear',
-        desc: '', // Write your description here
+        desc: "", // TYPE YOUR BIO HERE
         img: 'images /undyingbear.jpg',
         spotify: 'https://spotify.com',
         soundcloud: '',
@@ -25,7 +25,7 @@ const artistData = {
     },
     'twistedanimations': {
         name: 'TwistedAnimations',
-        desc: '', // Write your description here
+        desc: "", // TYPE YOUR BIO HERE
         img: 'images /twistedanimations.jpg',
         spotify: 'https://spotify.com',
         soundcloud: '',
@@ -33,7 +33,7 @@ const artistData = {
     },
     'smitebite': {
         name: 'SmiteBite',
-        desc: '', // Write your description here
+        desc: "", // TYPE YOUR BIO HERE
         img: 'images /smitebite.jpg',
         spotify: '',
         soundcloud: 'https://soundcloud.com',
@@ -65,7 +65,7 @@ function openArtist(id) {
     desc.innerHTML = ""; 
     clearTimeout(typingTimer);
     
-    // Inject Icons instead of text
+    // Build Icons
     linksContainer.innerHTML = ""; 
     if (data.spotify) {
         linksContainer.innerHTML += `<a href="${data.spotify}" target="_blank" class="spotify-icon"><i class="fab fa-spotify"></i></a>`;
@@ -80,6 +80,7 @@ function openArtist(id) {
     modal.style.display = 'flex';
     setTimeout(() => {
         box.classList.add('active');
+        // Only start typing if there is text in the desc field
         if(data.desc) {
             setTimeout(() => typeWriter(data.desc, 0, desc), 500);
         }

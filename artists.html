@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artists | Paper Vinyl Records</title>
     <style>
-        /* --- ALL CSS IS NOW IN THIS BLOCK TO PREVENT "MISSING STYLE" ERRORS --- */
         body { 
             margin: 0; background: #121212; color: white; 
             font-family: 'Courier New', Courier, monospace; 
         }
 
-        /* NAVIGATION MENU */
+        /* NAVIGATION */
         #top-menu {
             position: fixed; top: 0; left: 0; width: 100%; height: 70px;
             background: rgba(18, 18, 18, 0.85); backdrop-filter: blur(15px);
@@ -20,24 +19,12 @@
             padding: 0 50px; z-index: 300; box-sizing: border-box;
         }
         .nav-logo { height: 35px; }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a:link, .nav-links a:visited { 
+        .nav-links a { 
             color: white !important; text-decoration: none; margin-left: 20px; 
             text-transform: uppercase; font-size: 0.85rem; 
         }
-        .nav-links a:hover { color: #00ff00 !important; }
 
-        /* DROPDOWN MENU */
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content {
-            display: none; position: absolute; top: 100%; left: 20px;
-            background: rgba(18, 18, 18, 0.95); min-width: 160px;
-            border: 1px solid rgba(255, 255, 255, 0.1); z-index: 500;
-        }
-        .dropdown-content a { padding: 12px 16px; margin: 0 !important; display: block; font-size: 0.75rem; }
-        .dropdown:hover .dropdown-content { display: block; }
-
-        /* GRID LAYOUT */
+        /* GRID */
         .content-wrapper { padding: 120px 50px 50px; }
         .page-title { text-transform: uppercase; letter-spacing: 4px; text-align: center; margin-bottom: 50px; }
         .artist-grid {
@@ -48,39 +35,47 @@
         .artist-card:hover { transform: translateY(-10px); }
         .artist-card img { width: 100%; aspect-ratio: 1/1; border-radius: 2px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        /* ZOOM MODAL (BIO POPUP) */
+        /* --- THE ANIMATED MODAL --- */
         .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); z-index: 1000; justify-content: center; align-items: center;
-            backdrop-filter: blur(10px);
+            display: none; /* Toggled by JS */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 1000; 
+            justify-content: center; align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease; /* Fade effect */
         }
+        .modal-overlay.show { display: flex; opacity: 1; }
+
         .modal-zoom-box {
             background: #e0e0e0; color: #121212; width: 90%; max-width: 750px;
-            position: relative; padding: 30px; transition: 0.5s;
+            padding: 30px; position: relative;
+            transform: scale(0.7); /* Start small */
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy Zoom */
             clip-path: polygon(1% 0%, 100% 2%, 99% 100%, 0% 97%);
         }
-        .modal-zoom-box.active { transform: scale(1); opacity: 1; }
-        .modal-content { display: flex; gap: 30px; align-items: center; flex-wrap: wrap; }
+        /* The "Active" state that triggers the animation */
+        .modal-overlay.show .modal-zoom-box {
+            transform: scale(1);
+            opacity: 1;
+        }
 
+        .modal-content { display: flex; gap: 30px; align-items: center; flex-wrap: wrap; }
         #modal-img { 
             width: 280px; height: 280px; object-fit: cover; 
-            border-radius: 2px; box-shadow: 10px 10px 0px #121212; 
+            box-shadow: 10px 10px 0px #121212; 
         }
         .modal-info { flex: 1; min-width: 250px; }
         
         .close-btn { 
-            position: fixed; top: 30px; right: 40px; font-size: 50px; 
-            color: white; cursor: pointer; z-index: 1100; 
+            position: absolute; top: 10px; right: 20px; font-size: 45px; 
+            color: #121212; cursor: pointer; line-height: 1;
         }
 
-        /* SVG ICONS */
         .modal-links { margin-top: 20px; display: flex; gap: 20px; }
         .modal-links a { width: 28px; height: 28px; transition: 0.2s; }
         .modal-links svg { width: 100%; height: 100%; fill: #121212; }
         .modal-links a:hover { transform: scale(1.2); }
-        .modal-links .spotify-icon:hover svg { fill: #1DB954; }
-        .modal-links .sc-icon:hover svg { fill: #FF5500; }
-        .modal-links .insta-icon:hover svg { fill: #E1306C; }
     </style>
 </head>
 <body>
@@ -90,13 +85,7 @@
     <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="artists.html">Artists</a>
-        <div class="dropdown">
-            <a href="about.html" class="dropbtn">About</a>
-            <div class="dropdown-content">
-                <a href="about.html">About PVR</a>
-                <a href="team.html">Our Team</a>
-            </div>
-        </div>
+        <a href="about.html">About</a>
         <a href="shop.html">Shop</a>
     </div>
 </nav>
@@ -112,9 +101,9 @@
     </div>
 </div>
 
-<div id="artist-modal" class="modal-overlay">
-    <span class="close-btn" onclick="closeArtist()">&times;</span>
-    <div class="modal-zoom-box" id="modal-box">
+<div id="artist-modal" class="modal-overlay" onclick="closeArtist()">
+    <div class="modal-zoom-box" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeArtist()">&times;</span>
         <div class="modal-content">
             <img id="modal-img" src="">
             <div class="modal-info">

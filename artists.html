@@ -13,8 +13,6 @@
     <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="artists.html">Artists</a>
-        
-        <!-- NEW DROPDOWN -->
         <div class="dropdown">
             <a href="about.html" class="dropbtn">About</a>
             <div class="dropdown-content">
@@ -22,7 +20,6 @@
                 <a href="team.html">Our Team</a>
             </div>
         </div>
-
         <a href="shop.html">Shop</a>
     </div>
 </nav>
@@ -54,8 +51,10 @@
 </div>
 
 <div id="artist-modal" class="modal-overlay">
+    <!-- Close button moved outside zoom-box for visibility -->
+    <span class="close-btn" onclick="closeArtist()">&times;</span>
+    
     <div class="modal-zoom-box" id="modal-box">
-        <span class="close-btn" onclick="closeArtist()">&times;</span>
         <div class="modal-content">
             <img id="modal-img" src="">
             <div class="modal-info">

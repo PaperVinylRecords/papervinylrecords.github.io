@@ -10,12 +10,12 @@ let audioStarted = false;
 const loopStart = 2; 
 const loopEnd = 12; 
 
-// Smooth color transition points
+// Logo-inspired palette: Dark Forest, Neon Accent, and Paper Grey
 const colors = [
-    [18, 18, 18],   // Dark Grey
-    [30, 20, 20],   // Deep Red tint
-    [20, 30, 20],   // Deep Green tint
-    [18, 18, 28]    // Deep Blue tint
+    {r: 12, g: 34, b: 31},  // Dark Forest Green (from logo background)
+    {r: 0, g: 255, b: 0},   // Neon Green (from center ring)
+    {r: 224, g: 224, b: 224},// Paper Grey (from vinyl texture)
+    {r: 18, g: 18, b: 18}   // Deep Black for the final contact section
 ];
 
 function lerpColor(f) {
@@ -24,9 +24,9 @@ function lerpColor(f) {
     const next = Math.min(i + 1, colors.length - 1);
     const localF = section - i;
 
-    const r = Math.round(colors[i][0] + (colors[next][0] - colors[i][0]) * localF);
-    const g = Math.round(colors[i][1] + (colors[next][1] - colors[i][1]) * localF);
-    const b = Math.round(colors[i][2] + (colors[next][2] - colors[i][2]) * localF);
+    const r = Math.round(colors[i].r + (colors[next].r - colors[i].r) * localF);
+    const g = Math.round(colors[i].g + (colors[next].g - colors[i].g) * localF);
+    const b = Math.round(colors[i].b + (colors[next].b - colors[i].b) * localF);
     
     return `rgb(${r}, ${g}, ${b})`;
 }
@@ -40,14 +40,13 @@ window.addEventListener('scroll', () => {
     if (!audioStarted && scrollY > 10) {
         crackle.volume = 0;
         crackle.currentTime = loopStart;
-        crackle.play();
+        crackle.play().catch(() => {}); 
         audioStarted = true;
     }
     if (crackle.currentTime >= loopEnd) crackle.currentTime = loopStart;
 
     // 2. Smooth Background Transition
-    const bgColor = lerpColor(scrollFraction);
-    document.body.style.backgroundColor = bgColor;
+    document.body.style.backgroundColor = lerpColor(scrollFraction);
 
     // 3. Entry Screen Hide
     if (scrollY > 50) {
@@ -66,9 +65,8 @@ window.addEventListener('scroll', () => {
         if (scrollFraction >= start && scrollFraction < end) {
             scene.classList.add('active');
             
-            // IS THIS THE FINAL CONTACT SCENE?
             if (index === scenes.length - 1) {
-                // Fade out crackle
+                // Fade out crackle at the end
                 if (crackle.volume > 0.01) crackle.volume -= 0.01;
                 else crackle.pause();
 
@@ -78,7 +76,7 @@ window.addEventListener('scroll', () => {
                 if(navLogo) navLogo.style.opacity = '1';
             } else {
                 // Fade in/keep crackle during artists
-                if (audioStarted && crackle.volume < 0.25) crackle.volume += 0.01;
+                if (audioStarted && crackle.volume < 0.20) crackle.volume += 0.01;
                 
                 mainLogo.classList.remove('move-to-menu');
                 topMenu.classList.remove('visible');

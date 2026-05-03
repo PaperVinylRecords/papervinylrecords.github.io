@@ -1,15 +1,8 @@
-body {
-    margin: 0;
-    background: #121212;
-    color: white;
-    font-family: 'Courier New', Courier, monospace;
-}
+body { margin: 0; background: #121212; color: white; font-family: 'Courier New', Courier, monospace; }
 
 #top-menu {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 70px;
-    background: rgba(18, 18, 18, 0.7);
-    backdrop-filter: blur(15px);
+    position: fixed; top: 0; left: 0; width: 100%; height: 70px;
+    background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex; justify-content: space-between; align-items: center;
     padding: 0 50px; z-index: 300; box-sizing: border-box;
@@ -22,8 +15,7 @@ body {
 .page-title { text-transform: uppercase; letter-spacing: 4px; text-align: center; }
 
 .artist-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 40px; max-width: 1200px; margin: 0 auto;
 }
 
@@ -49,25 +41,9 @@ body {
 .modal-content { display: flex; gap: 30px; align-items: flex-start; }
 #modal-img { width: 250px; height: 250px; object-fit: cover; box-shadow: 10px 10px 0px #121212; }
 
-.modal-links {
-    margin-top: 30px;
-    display: flex;
-    gap: 25px; /* Fixed spacing */
-    align-items: center;
-}
-
-.modal-links a {
-    display: inline-block;
-    width: 28px;
-    height: 28px;
-    transition: transform 0.2s, fill 0.2s;
-}
-
-.modal-links svg {
-    width: 100%;
-    height: 100%;
-    fill: #121212;
-}
+.modal-links { margin-top: 30px; display: flex; gap: 25px; align-items: center; }
+.modal-links a { display: inline-block; width: 28px; height: 28px; transition: transform 0.2s, fill 0.2s; }
+.modal-links svg { width: 100%; height: 100%; fill: #121212; }
 
 .modal-links a:hover { transform: scale(1.2); }
 .modal-links .spotify-icon:hover svg { fill: #1DB954; }

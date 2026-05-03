@@ -5,73 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paper Vinyl Records</title>
     <style>
-        /* 1. GLOBAL & GRADIENT BACKGROUND */
-        html, body {
-            margin: 0;
-            padding: 0;
-            min-height: 100%;
-            overflow-x: hidden;
-            /* Initial color: Dark Forest Green from your logo */
-            background-color: rgb(12, 34, 31);
-            color: white;
-            font-family: 'Courier New', Courier, monospace;
-            transition: background-color 0.1s linear;
+        html, body { margin: 0; padding: 0; min-height: 100%; overflow-x: hidden; background-color: rgb(12, 34, 31); color: white; font-family: 'Courier New', Courier, monospace; }
+
+        /* The Box that stays in the middle of your screen */
+        .sticky-center {
+            position: sticky; top: 0; height: 100vh; width: 100%;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; z-index: 10;
         }
 
-        /* 2. THE ENTRY SCREEN */
-        #entry-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 200;
-            background: #121212;
-            transition: opacity 0.6s ease, visibility 0.6s;
-            pointer-events: none; /* Crucial: allows scroll to pass through */
-        }
-        .entry-text { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
-        .scroll-arrow { margin-top: 20px; font-size: 2rem; animation: bounce 2s infinite; }
+        /* The total scrollable length of the site */
+        .scroll-tall { height: 900vh; position: relative; }
 
-        /* 3. BLUR NAVIGATION MENU */
+        .scene {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.5s ease;
+        }
+        .scene.active { opacity: 1; visibility: visible; }
+
+        /* LOGO STABILITY */
+        .label-logo {
+            position: absolute; top: 30px; left: 30px; width: 120px;
+            z-index: 100; transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 1; /* Forced visible by default */
+        }
+        .label-logo.move-to-menu { opacity: 0; transform: translateY(-50px); pointer-events: none; }
+
+        /* MENU BLUR */
         #top-menu {
-            position: fixed;
-            top: -80px; left: 0; width: 100%; height: 70px;
-            background: rgba(18, 18, 18, 0.6);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            position: fixed; top: -80px; left: 0; width: 100%; height: 70px;
+            background: rgba(18, 18, 18, 0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 50px; z-index: 300;
-            transition: top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-sizing: border-box;
+            padding: 0 50px; z-index: 300; transition: top 0.6s ease; box-sizing: border-box;
         }
         #top-menu.visible { top: 0; }
         .nav-logo { height: 40px; opacity: 0; transition: 0.5s; }
         #top-menu.visible .nav-logo { opacity: 1 !important; }
-        .nav-links a { color: white; text-decoration: none; margin-left: 20px; text-transform: uppercase; font-size: 0.85rem; transition: 0.3s; }
-        .nav-links a:hover { color: #aaa; }
 
-        /* 4. LOGO FADE LOGIC */
-        .label-logo {
-            position: absolute; top: 30px; left: 30px; width: 120px;
-            z-index: 100; transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .label-logo.move-to-menu { opacity: 0; transform: translateY(-50px); }
-
-        /* 5. SCENE ANIMATIONS */
-        .scroll-tall { height: 800vh; }
-        .sticky-center {
-            position: sticky; top: 0; height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-        }
-        .scene {
-            position: absolute; opacity: 0; transition: opacity 0.5s;
-            display: flex; flex-direction: column; align-items: center; width: 100%;
-        }
-        .scene.active { opacity: 1; }
-
-        /* PAPER RIP EFFECT */
+        /* RIP STYLES */
         .rip-wrapper { position: relative; width: 400px; height: 400px; }
         .cover-half { position: absolute; width: 100%; height: 50%; background-size: cover; transition: transform 0.8s ease; }
         .top { top: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 80% 92%, 60% 100%, 40% 92%, 20% 100%, 0 92%); }
@@ -83,12 +56,11 @@
         .ripped + .artist-reveal { transform: scale(1); opacity: 1; }
         .artist-reveal img { width: 350px; border-radius: 2px; }
 
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        #entry-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 400; background: #121212; transition: opacity 0.6s ease; pointer-events: none; }
     </style>
 </head>
 <body>
 
-<!-- SOUND TAG -->
 <audio id="vinyl-crackle" src="crackle.mp3" loop crossorigin="anonymous"></audio>
 
 <nav id="top-menu">
@@ -102,8 +74,7 @@
 </nav>
 
 <div id="entry-screen">
-    <h1 class="entry-text">scroll to enter!</h1>
-    <div class="scroll-arrow">↓</div>
+    <h1>scroll to enter!</h1>
 </div>
 
 <div class="scroll-tall">
@@ -124,9 +95,9 @@
             </div>
         </div>
 
-        <!-- Add additional scenes for Artist 2 and 3 following the same format -->
+        <!-- Copy Artist 1 for Artist 2 and 3 here -->
 
-        <!-- Contact Section -->
+        <!-- Final Scene -->
         <div class="scene">
             <h1>Paper Vinyl Records</h1>
             <p>Demos: papervinyl@musician.org</p>
@@ -134,8 +105,6 @@
     </div>
 </div>
 
-<!-- EXTERNAL SCRIPT -->
 <script src="script.js"></script>
-
 </body>
 </html>

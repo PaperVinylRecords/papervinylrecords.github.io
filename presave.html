@@ -66,7 +66,7 @@
         .form-box h3 { margin: 0 0 10px; text-transform: uppercase; letter-spacing: 1px; }
         .form-box p { font-size: 0.85rem; margin-bottom: 20px; opacity: 0.8; }
         
-        .form-box input[type="email"] {
+        .form-box input {
             width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #999;
             border-radius: 4px; box-sizing: border-box; font-family: inherit;
         }
@@ -111,16 +111,20 @@
         <div id="status-msg" class="success-message"></div>
     </div>
 
-    <!-- COLLECT EMAIL OVERLAY -->
+    <!-- EMAIL GATHERING MODAL -->
     <div id="form-overlay" class="form-overlay" onclick="closeForm()">
         <div class="form-box" onclick="event.stopPropagation()">
             <span class="close-form" onclick="closeForm()">&times;</span>
-            <h3 id="form-title">Pre-Save Release</h3>
-            <p>Enter your email to receive an instant streaming link on launch day.</p>
+            <h3 id="form-title">Pre-Save</h3>
+            <p>Enter details to follow this release. We'll secure your pre-save slot.</p>
             
-            <!-- Replace action path with your actual email marketing form link later -->
             <form id="presave-form" onsubmit="submitForm(event)">
-                <input type="email" id="fan-email" placeholder="YOUR EMAIL ADDRESS" required>
+                <!-- HIDDEN DATA INPUTS SO FORMSPREE KNOWS WHO THEY PRE-SAVED -->
+                <input type="hidden" name="Artist" id="hidden-artist">
+                <input type="hidden" name="Release" id="hidden-release">
+                <input type="hidden" name="Platform" id="hidden-platform">
+
+                <input type="email" name="Email" id="fan-email" placeholder="YOUR EMAIL ADDRESS" required>
                 <button type="submit" class="submit-btn">Confirm Pre-Save</button>
             </form>
         </div>
@@ -136,21 +140,21 @@
         const urlParams = new URLSearchParams(window.location.search);
         const artistKey = urlParams.get('artist');
         const campaign = preSaveCampaigns[artistKey];
-        let currentPlatform = '';
 
         if (campaign) {
             document.getElementById('campaign-art').src = campaign.art;
             document.getElementById('campaign-title').innerText = campaign.title;
             document.getElementById('campaign-artist').innerText = campaign.artist;
             document.body.style.backgroundColor = campaign.bg;
-        } else {
-            document.getElementById('campaign-title').innerText = 'No Active Campaign';
-            document.getElementById('campaign-artist').innerText = 'Paper Vinyl Records';
+            
+            // Auto-fill hidden data tags for mapping logs
+            document.getElementById('hidden-artist').value = campaign.artist;
+            document.getElementById('hidden-release').value = campaign.title;
         }
 
         function openForm(platform) {
-            currentPlatform = platform;
             document.getElementById('form-title').innerText = `Pre-Save via ${platform}`;
+            document.getElementById('hidden-platform').value = platform;
             document.getElementById('form-overlay').style.display = 'flex';
         }
 
@@ -160,15 +164,9 @@
 
         function submitForm(e) {
             e.preventDefault();
-            const emailValue = document.getElementById('fan-email').value;
-            
-            // Log local tracking for testing (this shows in your browser console F12)
-            console.log(`Pre-save collection tracked: Email: ${emailValue} | Artist: ${artistKey} | Platform: ${currentPlatform}`);
-            
-            closeForm();
-            
-            // Show Success Notification on main layout
+            const form = document.getElementById('presave-form');
             const msg = document.getElementById('status-msg');
-            msg.innerText = `Confirmed! Check your inbox on launch day.`;
-            msg.style.display = 'block';
-        }
+            
+            // CHANGE THIS TO YOUR EXACT FORMSPREE LINK FROM STEP 1
+            const formspreeEndpoint = "https://formspree.io/f/mbderyql"; 
+

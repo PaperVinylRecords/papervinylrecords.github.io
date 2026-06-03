@@ -19,10 +19,21 @@
             padding: 0 50px; z-index: 300; box-sizing: border-box;
         }
         .nav-logo { height: 35px; }
+        .nav-links { display: flex; align-items: center; }
         .nav-links a { 
             color: white !important; text-decoration: none; margin-left: 20px; 
             text-transform: uppercase; font-size: 0.85rem; 
         }
+
+        /* DROPDOWN MENU */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; top: 100%; left: 20px;
+            background: rgba(18, 18, 18, 0.95); min-width: 160px;
+            border: 1px solid rgba(255, 255, 255, 0.1); z-index: 500;
+        }
+        .dropdown-content a { padding: 12px 16px; margin: 0 !important; display: block; font-size: 0.75rem; }
+        .dropdown:hover .dropdown-content { display: block; }
 
         /* GRID */
         .content-wrapper { padding: 120px 50px 50px; }
@@ -71,10 +82,17 @@
             color: #121212; cursor: pointer; line-height: 1;
         }
 
-        .modal-links { margin-top: 20px; display: flex; gap: 20px; }
-        .modal-links a { width: 28px; height: 28px; transition: 0.2s; }
+        /* SVG ICONS & HOVERS */
+        .modal-links { margin-top: 30px; display: flex; gap: 25px; align-items: center; }
+        .modal-links a { display: inline-block; width: 28px; height: 28px; transition: transform 0.2s, fill 0.2s; }
         .modal-links svg { width: 100%; height: 100%; fill: #121212; }
         .modal-links a:hover { transform: scale(1.2); }
+        .modal-links .spotify-icon:hover svg { fill: #1DB954; }
+        .modal-links .sc-icon:hover svg { fill: #FF5500; }
+        .modal-links .insta-icon:hover svg { fill: #E1306C; }
+        .modal-links .presave-icon:hover svg { fill: #00ff00; } /* Neon Green for Pre-save */
+
+        #modal-desc { font-size: 1rem; line-height: 1.6; min-height: 50px; }
     </style>
 </head>
 <body>
@@ -84,7 +102,13 @@
     <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="artists.html">Artists</a>
-        <a href="about.html">About</a>
+        <div class="dropdown">
+            <a href="about.html" class="dropbtn">About</a>
+            <div class="dropdown-content">
+                <a href="about.html">About PVR</a>
+                <a href="team.html">Our Team</a>
+            </div>
+        </div>
         <a href="shop.html">Shop</a>
     </div>
 </nav>
@@ -97,7 +121,6 @@
         <div class="artist-card" onclick="openArtist('undyingbear')"><img src="images /undyingbear.jpg"><h3>undyingbear</h3></div>
         <div class="artist-card" onclick="openArtist('twistedanimations')"><img src="images /twistedanimations.jpg"><h3>TwistedAnimations</h3></div>
         <div class="artist-card" onclick="openArtist('smitebite')"><img src="images /smitebite.jpg"><h3>SmiteBite</h3></div>
-        <!-- New Artist: BadMicGames Card -->
         <div class="artist-card" onclick="openArtist('badmicgames')"><img src="images /badmicgames.jpg"><h3>BadMicGames</h3></div>
     </div>
 </div>

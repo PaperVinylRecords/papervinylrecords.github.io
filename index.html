@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Vinyl Records | Launch Countdown</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            z-index: 2;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.5;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        /* COUNTDOWN GRID */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .time-box {
+            min-width: 80px;
+        }
+
+        .time-num {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ff00; /* Neon Green from logo */
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.6;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+
+        .contact-link {
+            color: #00ff00;
+            text-decoration: none;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 2px;
+            transition: opacity 0.3s;
+        }
+
+        .contact-link:hover {
+            opacity: 0.6;
+        }
+
+        /* Vinyl Pulse Animation */
+        .vinyl-bg {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 1;
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { opacity: 0.1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vinyl-bg"></div>
+
+    <div class="container">
+        <h1>Launching Soon</h1>
+        <div class="subtitle">Paper Vinyl Records</div>
+
+        <!-- COUNTDOWN DISPLAY -->
+        <div class="countdown-container">
+            <div class="time-box">
+                <span class="time-num" id="days">00</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-box">
+                <span class="time-num" id="hours">00</span>
+                <span class="time-label">Hrs</span>
+            </div>
+            <div class="time-box">
+                <span class="time-num" id="minutes">00</span>
+                <span class="time-label">Mins</span>
+            </div>
+            <div class="time-box">
+                <span class="time-num" id="seconds">00</span>
+                <span class="time-label">Secs</span>
+            </div>
+        </div>
+
+        <p>
+            The full website experience drops June 5th at 5:30 PM CDT.
+        </p>
+        <p style="margin-top: 20px;">
+            Inquiries: <a href="mailto:papervinyl@musician.org" class="contact-link">papervinyl@musician.org</a>
+        </p>
+    </div>
+
+    <script>
+        // Set target date strictly to June 5th, 2026 at 5:30 PM CDT (GMT-0500)
+        const launchDate = new Date("June 5, 2026 17:30:00 GMT-0500").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+
+            // Math calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display formatting helper (adds zero before single digits)
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            // If the countdown is finished, display a message
+            if (distance < 0) {
+                clearInterval(timer);
+                document.querySelector(".countdown-container").innerHTML = "<h2>WE ARE LIVE</h2>";
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>

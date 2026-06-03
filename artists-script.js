@@ -51,7 +51,7 @@ const artistData = {
         spotify: '', 
         soundcloud: '', 
         insta: '',
-        presave: '' 
+        presave: 'presave.html?artist=badmicgames' 
     }
 };
 

@@ -7,11 +7,10 @@
     <style>
         body {
             margin: 0; padding: 0; width: 100%; height: 100vh;
-            background-color: #1a2630; color: white; /* Clean Slate Blue/Dark background */
+            background-color: #1a2630; color: white;
             font-family: 'Courier New', Courier, monospace;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; text-align: center;
-            transition: background-color 1s ease;
         }
 
         #top-menu {
@@ -93,9 +92,9 @@
     </nav>
 
     <div class="presave-container">
-        <img id="campaign-art" class="album-art" src="" alt="Album Art">
-        <h1 id="campaign-title">Release Title</h1>
-        <div id="campaign-artist" class="artist-name">Artist Name</div>
+        <img class="album-art" src="images /musicmayhem2026.png" alt="Music Mayhem 2026 Art">
+        <h1>Music Mayhem 2026</h1>
+        <div class="artist-name">BadMicGames</div>
 
         <button class="action-btn spotify-btn" onclick="openForm('Spotify')">
             <span>Pre-Save On Spotify</span>
@@ -110,6 +109,7 @@
         <div id="status-msg" class="success-message"></div>
     </div>
 
+    <!-- EMAIL MODAL -->
     <div id="form-overlay" class="form-overlay" onclick="closeForm()">
         <div class="form-box" onclick="event.stopPropagation()">
             <span class="close-form" onclick="closeForm()">&times;</span>
@@ -117,8 +117,8 @@
             <p>Enter details to follow this release. We'll secure your pre-save slot.</p>
             
             <form id="presave-form" onsubmit="submitForm(event)">
-                <input type="hidden" name="Artist" id="hidden-artist">
-                <input type="hidden" name="Release" id="hidden-release">
+                <input type="hidden" name="Artist" value="BadMicGames">
+                <input type="hidden" name="Release" value="Music Mayhem 2026">
                 <input type="hidden" name="Platform" id="hidden-platform">
 
                 <input type="email" name="Email" id="fan-email" placeholder="YOUR EMAIL ADDRESS" required>
@@ -128,27 +128,6 @@
     </div>
 
     <script>
-        // Updated Release Database focusing on your drop
-        const preSaveCampaigns = {
-            'badmicgames': { artist: 'BadMicGames', title: 'Music Mayhem 2026', art: 'images /musicmayhem2026.png', bg: '#1a2630' }
-        };
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const artistKey = urlParams.get('artist');
-        
-        // Default to badmicgames if url param is missing or wrong
-        const campaign = preSaveCampaigns[artistKey] || preSaveCampaigns['badmicgames'];
-
-        if (campaign) {
-            document.getElementById('campaign-art').src = campaign.art;
-            document.getElementById('campaign-title').innerText = campaign.title;
-            document.getElementById('campaign-artist').innerText = campaign.artist;
-            document.body.style.backgroundColor = campaign.bg;
-            
-            document.getElementById('hidden-artist').value = campaign.artist;
-            document.getElementById('hidden-release').value = campaign.title;
-        }
-
         function openForm(platform) {
             document.getElementById('form-title').innerText = `Pre-Save via ${platform}`;
             document.getElementById('hidden-platform').value = platform;
@@ -164,7 +143,7 @@
             const form = document.getElementById('presave-form');
             const msg = document.getElementById('status-msg');
             
-            // Your Formspree dashboard testing endpoint link
+            // Your exact live Formspree project collection endpoint
             const formspreeEndpoint = "https://formspree.io/f/mbderyql"; 
 
             fetch(formspreeEndpoint, {
@@ -174,5 +153,16 @@
             }).then(response => {
                 if (response.ok) {
                     closeForm();
-
-                msg.innerText = "Confirmed! Check your inbox on launch day.";msg.style.display = 'block';form.reset();} else {alert("Submission Error.");}}).catch(error => {alert("Network error.");});}
+                    msg.innerText = "Confirmed! Check your inbox on launch day.";
+                    msg.style.display = 'block';
+                    form.reset();
+                } else {
+                    alert("Submission Error.");
+                }
+            }).catch(error => {
+                alert("Network error.");
+            });
+        }
+    </script>
+</body>
+</html>

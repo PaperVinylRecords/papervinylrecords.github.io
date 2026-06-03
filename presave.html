@@ -54,7 +54,6 @@
         .sc-btn:hover { background: #FF5500; color: white; }
         .sc-btn:hover svg { fill: white; }
 
-        /* FORM OVERLAY POPUP */
         .form-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 400; justify-content: center; align-items: center;
@@ -111,7 +110,6 @@
         <div id="status-msg" class="success-message"></div>
     </div>
 
-    <!-- EMAIL GATHERING MODAL -->
     <div id="form-overlay" class="form-overlay" onclick="closeForm()">
         <div class="form-box" onclick="event.stopPropagation()">
             <span class="close-form" onclick="closeForm()">&times;</span>
@@ -119,7 +117,6 @@
             <p>Enter details to follow this release. We'll secure your pre-save slot.</p>
             
             <form id="presave-form" onsubmit="submitForm(event)">
-                <!-- HIDDEN DATA INPUTS SO FORMSPREE KNOWS WHO THEY PRE-SAVED -->
                 <input type="hidden" name="Artist" id="hidden-artist">
                 <input type="hidden" name="Release" id="hidden-release">
                 <input type="hidden" name="Platform" id="hidden-platform">
@@ -147,7 +144,6 @@
             document.getElementById('campaign-artist').innerText = campaign.artist;
             document.body.style.backgroundColor = campaign.bg;
             
-            // Auto-fill hidden data tags for mapping logs
             document.getElementById('hidden-artist').value = campaign.artist;
             document.getElementById('hidden-release').value = campaign.title;
         }
@@ -167,6 +163,13 @@
             const form = document.getElementById('presave-form');
             const msg = document.getElementById('status-msg');
             
-            // CHANGE THIS TO YOUR EXACT FORMSPREE LINK FROM STEP 1
+            // TEST MODE LINK (Sends to your personal email to verify the database handles input)
             const formspreeEndpoint = "https://formspree.io/f/mbderyql"; 
 
+            fetch(formspreeEndpoint, {
+                method: "POST",
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+
+                    if (response.ok) {closeForm();msg.innerText = "Confirmed! Check your inbox on launch day.";msg.style.display = 'block';form.reset();} else {alert("Submission Error.");}}).catch(error => {alert("Network error.");});}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Vinyl Records | Live</title>
+    <style>
+        html, body {
+            margin: 0; padding: 0; width: 100%; height: 100vh;
+            background-color: #0c1013; color: white;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; text-align: center;
+        }
+        .stage-container { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; }
+        .vinyl-wrapper {
+            position: relative; width: 240px; height: 240px; margin-bottom: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            animation: slideDrop 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards, continuousSpin 20s linear infinite 1.2s; opacity: 0;
+        }
+        .vinyl-body { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, #222 30%, #111 31%, #1c1c1c 40%, #0a0a0a 41%, #151515 60%, #111 70%, #050505 100%); border: 2px solid rgba(255, 255, 255, 0.05); box-sizing: border-box; }
+        .vinyl-label { position: relative; z-index: 5; width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(90deg, #121212, #00ff00, #119955, #121212); background-size: 300% 100%; display: flex; align-items: center; justify-content: center; border: 2px solid #000; animation: leftToRightSweep 4s ease-in-out infinite; }
+        .vinyl-center-hole { width: 12px; height: 12px; background-color: #0c1013; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .label-headline { font-size: 2.2rem; font-weight: 300; letter-spacing: 6px; text-transform: uppercase; margin: 0 0 10px 0; opacity: 0; animation: fadeInText 1s ease forwards 0.8s; }
+        .status-badge { font-size: 1.2rem; letter-spacing: 4px; text-transform: uppercase; font-weight: bold; margin: 0; background: linear-gradient(90deg, #ffffff, #00ff00, #00ff88, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: leftToRightSweep 4s ease-in-out infinite, fadeInText 1s ease forwards 1s; opacity: 0; }
+        @keyframes slideDrop { 0% { transform: translateY(-80px) rotate(-180deg); opacity: 0; } 100% { transform: translateY(0) rotate(0deg); opacity: 1; } }
+        @keyframes continuousSpin { 100% { transform: rotate(360deg); } }
+        @keyframes fadeInText { 100% { opacity: 1; } }
+        @keyframes leftToRightSweep { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .background-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0, 255, 0, 0.03) 0%, rgba(0, 0, 0, 0) 70%); z-index: 1; pointer-events: none; }
+    </style>
+    <script>
+        // Check for cookie block BEFORE page contents render
+        if (document.cookie.split('; ').find(row => row.startsWith('pvr_visited='))) {
+            window.location.href = "indexbackup.html";
+        }
+    </script>
+</head>
+<body>
+    <div class="background-glow"></div>
+    <div class="stage-container">
+        <div class="vinyl-wrapper">
+            <div class="vinyl-body"></div>
+            <div class="vinyl-label"><div class="vinyl-center-hole"></div></div>
+        </div>
+        <h1 class="label-headline">Paper Vinyl Records</h1>
+        <p class="status-badge">PVR is now live!</p>
+    </div>
+    <script>
+        // Wait 4.5 seconds for the full intro animation to clear, drop cookie, then route home
+        setTimeout(function() {
+            document.cookie = "pvr_visited=true; max-age=31536000; path=/"; // Lasts for 1 year
+            window.location.href = "indexbackup.html";
+        }, 4500);
+    </script>
+</body>
+</html>

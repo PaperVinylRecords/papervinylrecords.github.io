@@ -1,54 +1,54 @@
 const artistData = {
     'wilrhy': { 
         name: 'WilRhy', 
-        desc: "", 
+        desc: "WilRhy is an instrumentalist, producer, and composer and is the founder of Paper Vinyl Records.", 
         img: 'images /wilrhy.jpg', 
-        spotify: 'https://spotify.com', 
+        spotify: 'https://open.spotify.com/artist/1b29I5ZHtYsY0QF2NDxAai?si=oYvrDnruQcC5TyGxpE467w', 
         soundcloud: '', 
-        insta: 'https://instagram.com',
+        insta: 'https://instagram.com/kirbdevpublic',
         presave: 'presave.html?artist=wilrhy' // PVR OWN LINK
     },
     'frostability': { 
         name: 'Frostability', 
-        desc: "", 
+        desc: "Hi, I'm Frostability/Ayden or you can call me Fr0stability if you know me for my emo music, i make similar music to feelslikehome or s0rroww", 
         img: 'images /frostability.jpg', 
-        spotify: 'https://spotify.com', 
+        spotify: 'https://open.spotify.com/artist/6Pnqtln6eh4XN3dOTz82h0?si=AZVKqxvQR2eCeKZrUIO8Yg', 
         soundcloud: '', 
-        insta: 'https://instagram.com',
+        insta: 'https://instagram.com/aydensstuff_',
         presave: 'presave.html?artist=frostability' // PVR OWN LINK
     },
     'undyingbear': { 
         name: 'undyingbear', 
-        desc: "", 
+        desc: "undyingbear/Jude is an instrumentalist and is a beginner at composing music. He is one of the top 5 artists to join Paper Vinyl Records", 
         img: 'images /undyingbear.jpg', 
-        spotify: 'https://spotify.com', 
+        spotify: 'https://open.spotify.com/artist/3sLlAACq5X1c0tey9Um4iR?si=32CgFZznSou_sfECmt2nzA', 
         soundcloud: '', 
-        insta: 'https://instagram.com',
+        insta: 'https://instagram.com/undying64',
         presave: '' 
     },
     'twistedanimations': { 
         name: 'TwistedAnimations', 
         desc: "", 
         img: 'images /twistedanimations.jpg', 
-        spotify: 'https://spotify.com', 
+        spotify: 'https://open.spotify.com/artist/0lvJH8oBsZd5XqF0ETI3TD?si=wSWtSUEgTrSDYEynkDeqiA', 
         soundcloud: '', 
         insta: '',
         presave: 'presave.html?artist=twistedanimations' // PVR OWN LINK
     },
     'smitebite': { 
         name: 'SmiteBite', 
-        desc: "", 
+        desc: "Not much is known about SmiteBite at the moment.", 
         img: 'images /smitebite.jpg', 
         spotify: '', 
-        soundcloud: 'https://soundcloud.com', 
+        soundcloud: 'https://soundcloud.com/smite-bite-14261925', 
         insta: '',
         presave: '' 
     },
     'badmicgames': { 
         name: 'BadMicGames', 
-        desc: "", 
+        desc: "Description work in progress.", 
         img: 'images /badmicgames.jpg', 
-        spotify: '', 
+        spotify: 'https://open.spotify.com/artist/0gS5djNJMApgW18oBp2qJq?si=k5_9RYChQgSq3Snx7lqe7A', 
         soundcloud: '', 
         insta: '',
         presave: 'presave.html?artist=badmicgames' 

@@ -5,164 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pre-Save | Paper Vinyl Records</title>
     <style>
-        body {
-            margin: 0; padding: 0; width: 100%; height: 100vh;
-            background-color: #1a2630; color: white;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex; justify-content: center; align-items: center;
+        body { 
+            margin: 0; padding: 0; width: 100%; height: 100vh; 
+            background-color: #1a2630; color: white; 
+            font-family: 'Courier New', Courier, monospace; 
+            display: flex; justify-content: center; align-items: center; 
             overflow: hidden; text-align: center;
-        }
+            transition: background-color 0.8s ease; /* Smooth transition color swapping */
+        } 
+        #top-menu { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 70px; 
+            background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(15px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 50px; z-index: 300; box-sizing: border-box; 
+        } 
+        .nav-logo { height: 35px; } 
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; text-transform: uppercase; font-size: 0.85rem; } 
+        .presave-container { 
+            z-index: 10; padding: 30px; background: rgba(26, 26, 26, 0.6); 
+            backdrop-filter: blur(10px); border-radius: 4px; 
+            max-width: 450px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+        } 
+        .album-art { width: 220px; height: 220px; object-fit: cover; margin: 0 auto 25px; display: block; border-radius: 2px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); } 
+        h1 { font-size: 1.6rem; margin: 0 0 5px; text-transform: uppercase; letter-spacing: 2px; } 
+        .artist-name { font-size: 0.95rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; } 
+        .action-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 15px 20px; margin-bottom: 15px; background: #e0e0e0; color: #121212; border: none; border-radius: 4px; text-transform: uppercase; font-family: inherit; font-size: 0.85rem; font-weight: bold; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; box-sizing: border-box; } 
+        .action-btn svg { width: 24px; height: 24px; fill: #121212; } 
+        .spotify-btn:hover { background: #1DB954; color: white; } 
+        .spotify-btn:hover svg { fill: white; } 
+        .sc-btn:hover { background: #FF5500; color: white; } 
+        .sc-btn:hover svg { fill: white; } 
+        .form-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 400; justify-content: center; align-items: center; } 
+        .form-box { background: #e0e0e0; color: #121212; padding: 30px; width: 90%; max-width: 400px; border-radius: 4px; text-align: left; position: relative; } 
+        .form-box h3 { margin: 0 0 10px; text-transform: uppercase; letter-spacing: 1px; } 
+        .form-box p { font-size: 0.85rem; margin-bottom: 20px; opacity: 0.8; } 
+        .form-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #999; border-radius: 4px; box-sizing: border-box; font-family: inherit; } 
+        .submit-btn { width: 100%; padding: 12px; background: #121212; color: white; border: none; border-radius: 4px; text-transform: uppercase; font-weight: bold; cursor: pointer; font-family: inherit; } 
+        .submit-btn:hover { background: #333; } 
+        .close-form { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; } 
+        .success-message { color: #00ff00; font-size: 0.9rem; margin-top: 15px; display: none; text-transform: uppercase; } 
+    </style> 
+</head> 
+<body> 
+    <nav id="top-menu"> 
+        <img src="images /pvrtransparent.png" class="nav-logo"> 
+        <div class="nav-links"> 
+            <a href="index.html">Home</a> 
+            <a href="artists.html">Artists</a> 
+            <a href="about.html">About</a> 
+            <a href="shop.html">Shop</a> 
+        </div> 
+    </nav> 
 
-        #top-menu {
-            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
-            background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 50px; z-index: 300; box-sizing: border-box;
-        }
-        .nav-logo { height: 35px; }
-        .nav-links a { color: white; text-decoration: none; margin-left: 20px; text-transform: uppercase; font-size: 0.85rem; }
+    <div class="presave-container"> 
+        <!-- Dynamic Target Elements IDs Filled Via Script -->
+        <img id="campaign-art" class="album-art" src="" alt="Release Art"> 
+        <h1 id="campaign-title">Release Title</h1> 
+        <div id="campaign-artist" class="artist-name">Artist Name</div> 
 
-        .presave-container {
-            z-index: 10; padding: 30px; background: rgba(26, 26, 26, 0.6);
-            backdrop-filter: blur(10px); border-radius: 4px;
-            max-width: 450px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        <button class="action-btn spotify-btn" onclick="openForm('Spotify')"> <span>Pre-Save On Spotify</span> <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.306c-.214.351-.673.463-1.024.249-2.81-1.717-6.347-2.105-10.513-1.152-.403.092-.81-.159-.903-.562-.092-.403.159-.81.562-.903 4.567-1.044 8.47-.59 11.629 1.341.351.214.463.673.249 1.024zm1.47-3.255c-.269.438-.838.577-1.276.308-3.216-1.977-8.118-2.548-11.92-1.393-.497.151-1.025-.13-1.176-.627-.151-.497.13-1.025.627-1.176 4.343-1.318 9.74-.68 13.46 1.612.439.269.578.838.309 1.276zm.126-3.414C15.24 8.23 8.87 8.018 5.16 9.144c-.58.176-1.196-.156-1.372-.736-.176-.58.156-1.196.736-1.372 4.257-1.293 11.292-1.045 15.753 1.603.522.316.692.99.376 1.512-.316.522-.99.692-1.512.376z"/></svg> </button> 
+        <button class="action-btn sc-btn" onclick="openForm('SoundCloud')"> <span>Pre-Save On SoundCloud</span> <svg viewBox="0 0 24 24"><path d="M12.33 13.916c-.035 0-.063.023-.063.06l-.004 2.85c0 .034.025.062.06.062h3.313c.036 0 .065-.028.065-.062v-2.85c0-.037-.029-.06-.065-.06h-3.306zm-1.85 2.914l-.004-.002c-.03 0-.057-.02-.06-.05V12.1c.003-.035.03-.064.066-.064.032 0 .06.025.064.06v4.68c-.004.034-.03.064-.066.064zm-1.876-.062l-.005.002c-.03 0-.057-.02-.061-.05l-.004-3.15c0-.036.027-.065.062-.065.034 0 .06.027.065.062l.004 3.151c-.005.03-.03.05-.061.05zm-1.875 0c-.03 0-.057-.02-.061-.05l-.004-2.85c.004-.034.032-.06.065-.06s.061.026.065.06l.004 2.85c-.004.03-.031.05-.065.05zm-1.874 0c-.03 0-.056-.02-.061-.05l-.004-1.8c.004-.033.031-.06.065-.06s.06.027.065.06l.004 1.8c-.005.03-.032.05-.065.05zm-1.876 0c-.03 0-.057-.02-.061-.05l-.004-1.05c0-.033.028-.06.061-.06.035 0 .061.027.065.06l.004 1.05c-.005.03-.03.05-.065.05zm-1.875 0c-.032 0-.058-.022-.062-.054l-.003-.45c.003-.033.03-.06.065-.06s.061.027.065.06l.003.45c-.004.032-.03.054-.068.054zm17.994-3.41c-.482 0-.93.136-1.314.368-.224-2.023-1.942-3.585-4.02-3.585-.626 0-1.213.14-1.734.39-.333-.947-1.233-1.628-2.296-1.628-.152 0-.3.013-.443.04.004-.066.012-.132.012-.2 0-1.572-1.274-2.846-2.845-2.845-.033 0-.063.01-.096.012v12.018c.032.003.06.013.093.013h12.646c1.472 0 2.666-1.194 2.666-2.666s-1.194-2.667-2.666-2.667z"/></svg> </button> 
+        <div id="status-msg" class="success-message"></div> 
+    </div> 
 
-        .album-art {
-            width: 220px; height: 220px; object-fit: cover;
-            margin: 0 auto 25px; display: block; border-radius: 2px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-        }
+    <!-- EMAIL MODAL --> 
+    <div id="form-overlay" class="form-overlay" onclick="closeForm()"> 
+        <div class="form-box" onclick="event.stopPropagation()"> 
+            <span class="close-form" onclick="closeForm()">&times;</span> 
+            <h3 id="form-title">Pre-Save</h3> 
+            <p>Enter details to follow this release. We'll secure your pre-save slot.</p> 
+            <form id="presave-form" onsubmit="submitForm(event)"> 
+                <!-- Dynamic values handled strictly via script properties -->
+                <input type="hidden" name="Artist" id="hidden-artist" value=""> 
+                <input type="hidden" name="Release" id="hidden-release" value=""> 
+                <input type="hidden" name="Platform" id="hidden-platform"> 
+                <input type="email" name="Email" id="fan-email" placeholder="YOUR EMAIL ADDRESS" required> 
+                <button type="submit" class="submit-btn">Confirm Pre-Save</button> 
+            </form> 
+        </div> 
+    </div> 
 
-        h1 { font-size: 1.6rem; margin: 0 0 5px; text-transform: uppercase; letter-spacing: 2px; }
-        .artist-name { font-size: 0.95rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; }
+    <script> 
+        // 1. ALL ACTIVE LABEL CAMPAIGNS REGISTERED HERE
+        const preSaveCampaigns = {
+            'badmicgames': { artist: 'BadMicGames', title: 'Music Mayhem 2026', art: 'images /musicmayhem2026.png', bg: '#1a2630' },
+            'wilrhy': { artist: 'WilRhy', title: 'Calming Daily Series', art: 'images /calmingdailyseries.png', bg: '#23372d' },
+            'twistedanimations': { artist: 'TwistedAnimations', title: 'Cha-Ching', art: 'images /chaching.png', bg: '#2d2819' },
+            'frostability': { artist: 'Frostability & WilRhy', title: 'BFUP Soundtrack', art: 'images /bfup.png', bg: '#320f0f' }
+        };
 
-        .action-btn {
-            display: flex; align-items: center; justify-content: space-between;
-            width: 100%; padding: 15px 20px; margin-bottom: 15px;
-            background: #e0e0e0; color: #121212; border: none;
-            border-radius: 4px; text-transform: uppercase; font-family: inherit;
-            font-size: 0.85rem; font-weight: bold; letter-spacing: 1px;
-            cursor: pointer; transition: all 0.3s ease; box-sizing: border-box;
-        }
-        .action-btn svg { width: 24px; height: 24px; fill: #121212; }
-        .spotify-btn:hover { background: #1DB954; color: white; }
-        .spotify-btn:hover svg { fill: white; }
-        .sc-btn:hover { background: #FF5500; color: white; }
-        .sc-btn:hover svg { fill: white; }
-
-        .form-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 400; justify-content: center; align-items: center;
-        }
-        .form-box {
-            background: #e0e0e0; color: #121212; padding: 30px; width: 90%; max-width: 400px;
-            border-radius: 4px; text-align: left; position: relative;
-        }
-        .form-box h3 { margin: 0 0 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .form-box p { font-size: 0.85rem; margin-bottom: 20px; opacity: 0.8; }
+        // 2. URL QUERY PARSER
+        const urlParams = new URLSearchParams(window.location.search);
+        const artistKey = urlParams.get('artist');
         
-        .form-box input {
-            width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #999;
-            border-radius: 4px; box-sizing: border-box; font-family: inherit;
-        }
-        .submit-btn {
-            width: 100%; padding: 12px; background: #121212; color: white;
-            border: none; border-radius: 4px; text-transform: uppercase;
-            font-weight: bold; cursor: pointer; font-family: inherit;
-        }
-        .submit-btn:hover { background: #333; }
-        .close-form { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; }
-        
-        .success-message { color: #00ff00; font-size: 0.9rem; margin-top: 15px; display: none; text-transform: uppercase; }
-    </style>
-</head>
-<body>
+        // Safety Fallback: Default to BadMicGames if url param is missing, misspelled, or wrong
+        const campaign = preSaveCampaigns[artistKey] || preSaveCampaigns['badmicgames'];
 
-    <nav id="top-menu">
-        <img src="images /pvrtransparent.png" class="nav-logo">
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="artists.html">Artists</a>
-            <a href="about.html">About</a>
-            <a href="shop.html">Shop</a>
-        </div>
-    </nav>
-
-    <div class="presave-container">
-        <img class="album-art" src="images /musicmayhem2026.png" alt="Music Mayhem 2026 Art">
-        <h1>Music Mayhem 2026</h1>
-        <div class="artist-name">BadMicGames</div>
-
-        <button class="action-btn spotify-btn" onclick="openForm('Spotify')">
-            <span>Pre-Save On Spotify</span>
-            <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.306c-.214.351-.673.463-1.024.249-2.81-1.717-6.347-2.105-10.513-1.152-.403.092-.81-.159-.903-.562-.092-.403.159-.81.562-.903 4.567-1.044 8.47-.59 11.629 1.341.351.214.463.673.249 1.024zm1.47-3.255c-.269.438-.838.577-1.276.308-3.216-1.977-8.118-2.548-11.92-1.393-.497.151-1.025-.13-1.176-.627-.151-.497.13-1.025.627-1.176 4.343-1.318 9.74-.68 13.46 1.612.439.269.578.838.309 1.276zm.126-3.414C15.24 8.23 8.87 8.018 5.16 9.144c-.58.176-1.196-.156-1.372-.736-.176-.58.156-1.196.736-1.372 4.257-1.293 11.292-1.045 15.753 1.603.522.316.692.99.376 1.512-.316.522-.99.692-1.512.376z"/></svg>
-        </button>
-
-        <button class="action-btn sc-btn" onclick="openForm('SoundCloud')">
-            <span>Pre-Save On SoundCloud</span>
-            <svg viewBox="0 0 24 24"><path d="M12.33 13.916c-.035 0-.063.023-.063.06l-.004 2.85c0 .034.025.062.06.062h3.313c.036 0 .065-.028.065-.062v-2.85c0-.037-.029-.06-.065-.06h-3.306zm-1.85 2.914l-.004-.002c-.03 0-.057-.02-.06-.05V12.1c.003-.035.03-.064.066-.064.032 0 .06.025.064.06v4.68c-.004.034-.03.064-.066.064zm-1.876-.062l-.005.002c-.03 0-.057-.02-.061-.05l-.004-3.15c0-.036.027-.065.062-.065.034 0 .06.027.065.062l.004 3.151c-.005.03-.03.05-.061.05zm-1.875 0c-.03 0-.057-.02-.061-.05l-.004-2.85c.004-.034.032-.06.065-.06s.061.026.065.06l.004 2.85c-.004.03-.031.05-.065.05zm-1.874 0c-.03 0-.056-.02-.061-.05l-.004-1.8c.004-.033.031-.06.065-.06s.06.027.065.06l.004 1.8c-.005.03-.032.05-.065.05zm-1.876 0c-.03 0-.057-.02-.061-.05l-.004-1.05c0-.033.028-.06.061-.06.035 0 .061.027.065.06l.004 1.05c-.005.03-.03.05-.065.05zm-1.875 0c-.032 0-.058-.022-.062-.054l-.003-.45c.003-.033.03-.06.065-.06s.061.027.065.06l.003.45c-.004.032-.03.054-.068.054zm17.994-3.41c-.482 0-.93.136-1.314.368-.224-2.023-1.942-3.585-4.02-3.585-.626 0-1.213.14-1.734.39-.333-.947-1.233-1.628-2.296-1.628-.152 0-.3.013-.443.04.004-.066.012-.132.012-.2 0-1.572-1.274-2.846-2.845-2.845-.033 0-.063.01-.096.012v12.018c.032.003.06.013.093.013h12.646c1.472 0 2.666-1.194 2.666-2.666s-1.194-2.667-2.666-2.667z"/></svg>
-        </button>
-
-        <div id="status-msg" class="success-message"></div>
-    </div>
-
-    <!-- EMAIL MODAL -->
-    <div id="form-overlay" class="form-overlay" onclick="closeForm()">
-        <div class="form-box" onclick="event.stopPropagation()">
-            <span class="close-form" onclick="closeForm()">&times;</span>
-            <h3 id="form-title">Pre-Save</h3>
-            <p>Enter details to follow this release. We'll secure your pre-save slot.</p>
+        // 3. INJECT CAMPAIGN INTO CONTAINER STAGE
+        if (campaign) {
+            document.getElementById('campaign-art').src = campaign.art;
+            document.getElementById('campaign-title').innerText = campaign.title;
+            document.getElementById('campaign-artist').innerText = campaign.artist;
+            document.body.style.backgroundColor = campaign.bg;
             
-            <form id="presave-form" onsubmit="submitForm(event)">
-                <input type="hidden" name="Artist" value="BadMicGames">
-                <input type="hidden" name="Release" value="Music Mayhem 2026">
-                <input type="hidden" name="Platform" id="hidden-platform">
-
-                <input type="email" name="Email" id="fan-email" placeholder="YOUR EMAIL ADDRESS" required>
-                <button type="submit" class="submit-btn">Confirm Pre-Save</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        function openForm(platform) {
-            document.getElementById('form-title').innerText = `Pre-Save via ${platform}`;
-            document.getElementById('hidden-platform').value = platform;
-            document.getElementById('form-overlay').style.display = 'flex';
+            // Dynamic Formspree Data Mapping
+            document.getElementById('hidden-artist').value = campaign.artist;
+            document.getElementById('hidden-release').value = campaign.title;
         }
 
-        function closeForm() {
-            document.getElementById('form-overlay').style.display = 'none';
-        }
-
-        function submitForm(e) {
-            e.preventDefault();
-            const form = document.getElementById('presave-form');
-            const msg = document.getElementById('status-msg');
-            
-            // Your exact live Formspree project collection endpoint
-            const formspreeEndpoint = "https://formspree.io/f/mbderyql"; 
-
-            fetch(formspreeEndpoint, {
-                method: "POST",
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            }).then(response => {
-                if (response.ok) {
-                    closeForm();
-                    msg.innerText = "Confirmed! Check your inbox on launch day.";
-                    msg.style.display = 'block';
-                    form.reset();
-                } else {
-                    alert("Submission Error.");
-                }
-            }).catch(error => {
-                alert("Network error.");
-            });
-        }
-    </script>
-</body>
-</html>
+        function openForm(platform) { 
+            document.getElementById('form-title').innerText = `Pre-Save via ${platform}`; 
+            document.getElementById('hidden-platform').value = platform; 
+            document.getElementById('form-overlay').style.display = 'flex'; 
+        } 
+        function closeForm() { 
+            document.getElementById('form-overlay').style.display = 'none'; 
+        } 
+        function submitForm(e) { 
+            e.preventDefault(); 
+            const form = document.getElementById('presave-form'); 
+            const msg = document.getElementById('status-msg'); 
+            const formspreeEndpoint = "https://formspree.io/f/mbderyql";fetch(formspreeEndpoint, {method: "POST",body: new FormData(form),headers: { 'Accept': 'application/json' }}).then(response => {if (response.ok) {closeForm();msg.innerText = "Confirmed! Check your inbox on launch day.";msg.style.display = 'block';form.reset();} else {alert("Submission Error.");}}).catch(error => {alert("Network error.");});}

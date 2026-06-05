@@ -4,35 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | Paper Vinyl Records</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0; padding: 0; background: #121212; color: white;
+            font-family: 'Courier New', Courier, monospace; min-height: 100vh;
+        }
+        #top-menu {
+            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
+            background: rgba(18, 18, 18, 0.85); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 50px; z-index: 300; box-sizing: border-box;
+        }
+        .nav-logo { height: 35px; }
+        .nav-links a { color: white !important; text-decoration: none; margin-left: 20px; text-transform: uppercase; font-size: 0.85rem; }
+        .nav-links a:hover { color: #00ff00 !important; }
+
+        .content-wrapper { padding: 140px 50px 80px; display: flex; justify-content: center; }
+        .about-container { max-width: 650px; width: 100%; line-height: 1.8; text-align: left; }
+        .page-title { text-transform: uppercase; letter-spacing: 5px; margin-bottom: 40px; font-size: 2rem; font-weight: 300; }
+        .about-lead { font-size: 1.2rem; border-left: 3px solid #00ff00; padding-left: 15px; margin-bottom: 30px; color: #e0e0e0; }
+        p { opacity: 0.8; font-size: 0.95rem; margin-bottom: 25px; }
+
+        /* SOCIAL CHANNELS CONTAINER */
+        .social-box {
+            margin-top: 40px; padding-top: 30px;
+            border-top: 1px solid #222; display: flex; gap: 20px; flex-wrap: wrap;
+        }
+        .social-btn {
+            display: inline-block; padding: 12px 24px; border: 1px solid white;
+            color: white; text-decoration: none; text-transform: uppercase;
+            font-size: 0.8rem; letter-spacing: 1px; transition: all 0.3s ease;
+        }
+        .social-btn:hover { background: white; color: #121212; }
+        .insta-btn:hover { border-color: #E1306C; background: #E1306C; color: white; }
+        .linkedin-btn:hover { border-color: #0077B5; background: #0077B5; color: white; }
+    </style>
 </head>
 <body>
+    <nav id="top-menu">
+        <img src="images /pvrtransparent.png" class="nav-logo">
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="artists.html">Artists</a>
+            <a href="about.html">About</a> 
+            <a href="shop.html">Shop</a>
+        </div>
+    </nav>
 
-<nav id="top-menu">
-    <img src="images /pvrtransparent.png" class="nav-logo">
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="artists.html">Artists</a>
-        <div class="dropdown">
-            <a href="about.html" class="dropbtn">About</a>
-            <div class="dropdown-content">
-                <a href="about.html">About PVR</a>
-                <a href="team.html">Our Team</a>
+    <div class="content-wrapper">
+        <div class="about-container">
+            <h1 class="page-title">The Story</h1>
+            <p class="about-lead">Paper Vinyl Records is just an independent project focused on real music, textured art, and analog vibes.</p>
+            <p>Everything here is run by me. The goal is simple: support creators making dope lo-fi, electronic, and experimental sounds, and give them a home that cares about the physical aesthetic of music.</p>
+            <p>From torn paper artwork sleeves to the final needle crackle on a spinning record, Paper Vinyl celebrates the stuff you can actually feel.</p>
+            <p>Want to send a demo, ask a question, or just talk music? Hit me up directly at:<br>
+            <a href="mailto:papervinyl@musician.org" style="color: #00ff00; text-decoration: none;">papervinyl@musician.org</a></p>
+
+            <!-- HARDCODED LIVE LINK PLATFORMS -->
+            <div class="social-box">
+                <a href="https://instagram.com/papervinylrecords" target="_blank" class="social-btn insta-btn">Instagram</a>
+                <a href="https://linkedin.com/in/wilrhy" target="_blank" class="social-btn linkedin-btn">LinkedIn</a>
             </div>
         </div>
-        <a href="shop.html">Shop</a>
     </div>
-</nav>
-
-<div class="content-wrapper">
-    <div class="about-container">
-        <h1 class="page-title">About PVR</h1>
-        <section class="about-section">
-            <p class="about-lead">Paper Vinyl Records: Raw, tactile, and analog in a digital world.</p>
-            <p>Founded on the principle that music should be felt as much as it is heard. We focus on artists who push the boundaries of texture and atmosphere.</p>
-        </section>
-    </div>
-</div>
-
 </body>
 </html>

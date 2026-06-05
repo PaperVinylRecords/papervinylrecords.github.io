@@ -11,8 +11,23 @@
             font-family: 'Courier New', Courier, monospace;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; text-align: center;
+            transition: background-color 0.5s ease; 
         }
-        .stage-container { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; }
+        
+        /* Master container handling the clean fade-out stage */
+        .stage-container { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 10; 
+            opacity: 1;
+            transition: opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* Ultra smooth long fade-out */
+        }
+        
+        /* Triggered right before redirection */
+        .stage-container.fade-out {
+            opacity: 0;
+            transform: scale(0.98); /* Subtle zoom out effect during fade */
+            transition: opacity 1.5s ease, transform 1.5s ease;
+        }
+
         .vinyl-wrapper {
             position: relative; width: 240px; height: 240px; margin-bottom: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
             animation: slideDrop 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards, continuousSpin 20s linear infinite 1.2s; opacity: 0;
@@ -22,6 +37,7 @@
         .vinyl-center-hole { width: 12px; height: 12px; background-color: #0c1013; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.2); }
         .label-headline { font-size: 2.2rem; font-weight: 300; letter-spacing: 6px; text-transform: uppercase; margin: 0 0 10px 0; opacity: 0; animation: fadeInText 1s ease forwards 0.8s; }
         .status-badge { font-size: 1.2rem; letter-spacing: 4px; text-transform: uppercase; font-weight: bold; margin: 0; background: linear-gradient(90deg, #ffffff, #00ff00, #00ff88, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: leftToRightSweep 4s ease-in-out infinite, fadeInText 1s ease forwards 1s; opacity: 0; }
+        
         @keyframes slideDrop { 0% { transform: translateY(-80px) rotate(-180deg); opacity: 0; } 100% { transform: translateY(0) rotate(0deg); opacity: 1; } }
         @keyframes continuousSpin { 100% { transform: rotate(360deg); } }
         @keyframes fadeInText { 100% { opacity: 1; } }
@@ -29,7 +45,7 @@
         .background-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0, 255, 0, 0.03) 0%, rgba(0, 0, 0, 0) 70%); z-index: 1; pointer-events: none; }
     </style>
     <script>
-        // Check for cookie block BEFORE page contents render
+        // Check cookie condition instantly to avoid secondary flash anomalies
         if (document.cookie.split('; ').find(row => row.startsWith('pvr_visited='))) {
             window.location.href = "indexbackup.html";
         }
@@ -37,7 +53,7 @@
 </head>
 <body>
     <div class="background-glow"></div>
-    <div class="stage-container">
+    <div class="stage-container" id="container-box">
         <div class="vinyl-wrapper">
             <div class="vinyl-body"></div>
             <div class="vinyl-label"><div class="vinyl-center-hole"></div></div>
@@ -46,11 +62,16 @@
         <p class="status-badge">PVR is now live!</p>
     </div>
     <script>
-        // Wait 4.5 seconds for the full intro animation to clear, drop cookie, then route home
+        // 1. Initiate long cinematic text and elements fade-out step first
         setTimeout(function() {
-            document.cookie = "pvr_visited=true; max-age=31536000; path=/"; // Lasts for 1 year
+            document.getElementById('container-box').classList.add('fade-out');
+        }, 3200);
+
+        // 2. Clear stage arrays, apply browser tracking memory string, route forward
+        setTimeout(function() {
+            document.cookie = "pvr_visited=true; max-age=31536000; path=/"; 
             window.location.href = "indexbackup.html";
-        }, 4500);
+        }, 4700);
     </script>
 </body>
 </html>

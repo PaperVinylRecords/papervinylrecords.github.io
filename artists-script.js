@@ -17,9 +17,9 @@ const artistData = {
         insta: 'https://instagram.com/aydensstuff_',
         presave: 'presave.html?artist=frostability' // PVR OWN LINK
     },
-    'undyingbear': { 
-        name: 'undyingbear', 
-        desc: "undyingbear/Jude is an instrumentalist and is a beginner at composing music. He is one of the top 5 artists to join Paper Vinyl Records", 
+    'judeuk': { 
+        name: 'judeUK', 
+        desc: "judeUK/Jude is an instrumentalist and is a beginner at composing music. He is one of the top 5 artists to join Paper Vinyl Records", 
         img: 'images /undyingbear.jpg', 
         spotify: 'https://open.spotify.com/artist/3sLlAACq5X1c0tey9Um4iR?si=32CgFZznSou_sfECmt2nzA', 
         soundcloud: '', 

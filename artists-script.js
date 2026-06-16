@@ -5,7 +5,7 @@ const artistData = {
         img: 'images /wilrhy.jpg', 
         spotify: 'https://open.spotify.com/artist/1b29I5ZHtYsY0QF2NDxAai?si=oYvrDnruQcC5TyGxpE467w', 
         soundcloud: '', 
-        insta: 'https://instagram.com/kirbdevpublic',
+        insta: 'https://instagram.com/willypack',
         presave: 'presave.html?artist=wilrhy' // PVR OWN LINK
     },
     'frostability': { 

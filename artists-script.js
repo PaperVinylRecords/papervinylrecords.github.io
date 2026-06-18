@@ -39,7 +39,7 @@ const artistData = {
         name: 'SmiteBite', 
         desc: "Not much is known about SmiteBite at the moment.", 
         img: 'images /smitebite.jpg', 
-        spotify: '', 
+        spotify: 'https://open.spotify.com/artist/3MtWr4iE63OiCIuLnr7fqV?si=ej2h7HTUTyidC9vjlvZ5Fw', 
         soundcloud: 'https://soundcloud.com/smite-bite-14261925', 
         insta: '',
         presave: '' 

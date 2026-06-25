@@ -19,12 +19,12 @@ const artistData = {
     },
     'judeuk': { 
         name: 'judeUK', 
-        desc: "judeUK/Jude is an instrumentalist and is a beginner at composing music. He is one of the top 5 artists to join Paper Vinyl Records", 
+        desc: "judeUK/Jude is an instrumentalist and is a beginner at composing music. He is one of the top 5 artists to join Paper Vinyl Records. judeUK has recently abandoned his old Spotify profile and is now rebranded to judeUK. Check out his new release below.", 
         img: 'images /undyingbear.jpg', 
-        spotify: 'https://open.spotify.com/artist/3sLlAACq5X1c0tey9Um4iR?si=32CgFZznSou_sfECmt2nzA', 
+        spotify: 'https://open.spotify.com/artist/0utz4ve1gR4hJRwzwAlKsG?si=BDYmB1GOQTeXiOd6dkrvww', 
         soundcloud: '', 
         insta: 'https://instagram.com/undying64',
-        presave: '' 
+        presave: 'presave.html?artist=judeuk' 
     },
     'twistedanimations': { 
         name: 'TwistedAnimations', 

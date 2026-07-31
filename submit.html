@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Submission</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- PERSISTENT BLUR MENU -->
+    <header id="top-menu">
+        <img src="logo.png" alt="Logo" class="nav-logo"> <!-- Add your logo source -->
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <div class="dropdown">
+                <a href="#">Submit ▼</a>
+                <div class="dropdown-content">
+                    <a href="#">Music</a>
+                    <a href="#">Art</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CONTENT LAYOUT -->
+    <div class="content-wrapper">
+        <h1 class="page-title">Music Submission</h1>
+        
+        <div class="form-container">
+            <!-- FormSubmit action handles sending the email. enctype allows file uploads -->
+            <form action="https://formsubmit.co/wilrhycontact@yahoo.com" method="POST" enctype="multipart/form-data">
+                
+                <!-- Disable Captcha (Optional, keeps the aesthetic clean) -->
+                <input type="hidden" name="_captcha" value="false">
+                <!-- Success page redirect (Optional, leave blank to use FormSubmit's default) -->
+                <input type="hidden" name="_next" value="https://www.papervinylmusic.com/music-submit-success.html">
+
+                <div class="form-group">
+                    <label for="song_name">Song Name</label>
+                    <input type="text" id="song_name" name="song_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="artist_name">Artist Name</label>
+                    <input type="text" id="artist_name" name="artist_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="release_date">Release Date</label>
+                    <input type="date" id="release_date" name="release_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="audio_file">Audio File (MP3, WAV)</label>
+                    <input type="file" id="audio_file" name="audio_file" accept="audio/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cover_art">Cover Art</label>
+                    <input type="file" id="cover_art" name="cover_art" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="songwriter_credits">Songwriter/Composer Credits</label>
+                    <textarea id="songwriter_credits" name="songwriter_credits" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="producer_credits">Production/Producer Credits</label>
+                    <textarea id="producer_credits" name="producer_credits" rows="3" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Track</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

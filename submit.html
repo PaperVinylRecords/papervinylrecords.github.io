@@ -76,11 +76,50 @@
         /* Dropdown specific styles */
         .form-group select {
             cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
         }
         .form-group select option {
             background: #121212;
             color: white;
             padding: 10px;
+        }
+
+        /* Checkbox specific styles */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #00ff00;
+            cursor: pointer;
+        }
+
+        .helper-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 6px;
+            margin-bottom: 0;
+            font-style: italic;
         }
 
         /* File input specific styling */
@@ -112,6 +151,26 @@
             box-shadow: 0 0 8px rgba(0, 255, 0, 0.2);
         }
 
+        /* Add Contributor Button */
+        .add-contributor-btn {
+            background: transparent;
+            color: #00ff00;
+            border: 1px dashed #00ff00;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        
+        .add-contributor-btn:hover {
+            background: rgba(0, 255, 0, 0.1);
+        }
+
         /* Submit Button */
         .submit-btn {
             width: 100%;
@@ -140,6 +199,10 @@
             .form-row {
                 flex-direction: column;
                 gap: 0;
+            }
+            .checkbox-group {
+                margin-top: -10px;
+                margin-bottom: 25px;
             }
         }
     </style>
@@ -177,15 +240,47 @@
                     <label for="submitter_email">Your Email Address</label>
                     <input type="email" id="submitter_email" name="submitter_email" placeholder="In case we need to contact you" required>
                 </div>
+                
+                <!-- RELEASE TYPE -->
+                <div class="form-group">
+                    <label for="release_type">Release Type</label>
+                    <select id="release_type" name="release_type" required>
+                        <option value="" disabled selected>Select Type...</option>
+                        <option value="Single (1-3 tracks)">Single (1-3 tracks)</option>
+                        <option value="Album/EP (4-50 tracks)">Album/EP (4-50 tracks)</option>
+                    </select>
+                </div>
 
+                <!-- ARTIST DETAILS -->
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="song_name">Song Name</label>
+                        <label for="song_name">Song/Project Name</label>
                         <input type="text" id="song_name" name="song_name" required>
                     </div>
                     <div class="form-group">
                         <label for="artist_name">Artist Name</label>
                         <input type="text" id="artist_name" name="artist_name" required>
+                    </div>
+                </div>
+
+                <!-- NUMBER OF ARTISTS & VARIOUS ARTISTS CHECKBOX -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="artist_count">Number of Artists</label>
+                        <select id="artist_count" name="artist_count" required>
+                            <option value="" disabled selected>Select Count...</option>
+                            <option value="1 Artist">1 Artist</option>
+                            <option value="2 Artists">2 Artists</option>
+                            <option value="3 Artists">3 Artists</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group checkbox-group" style="padding-top: 15px;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="various_artists" name="various_artists" value="Yes">
+                            <span>Various Artists</span>
+                        </label>
+                        <p class="helper-text">Check this if you have over 3 artists on the main release.</p>
                     </div>
                 </div>
 
@@ -217,48 +312,95 @@
                     </div>
                 </div>
 
-                <!-- DROPDOWN PRODUCTION CREDITS -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="production_role">Production Role</label>
-                        <select id="production_role" name="production_role" required>
-                            <option value="" disabled selected>Select Role...</option>
-                            <option value="Producer">Producer</option>
-                            <option value="Co-Producer">Co-Producer</option>
-                            <option value="Vocal Producer">Vocal Producer</option>
-                            <option value="Vocals">Vocals</option>
-                            <option value="Background Vocals">Background Vocals</option>
-                            <option value="Guitar">Guitar</option>
-                            <option value="Bass">Bass</option>
-                            <option value="Piano">Piano</option>
-                            <option value="Keyboards">Keyboards</option>
-                            <option value="Synthesizer">Synthesizer</option>
-                            <option value="Drums">Drums</option>
-                            <option value="Percussion">Percussion</option>
-                            <option value="Strings">Strings</option>
-                            <option value="All Instruments">All Instruments</option>
-                            <option value="Programming">Programming</option>
-                            <option value="Mixing Engineer">Mixing Engineer</option>
-                            <option value="Mastering Engineer">Mastering Engineer</option>
-                            <option value="Recording Engineer">Recording Engineer</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="production_name">Contributor Name</label>
-                        <input type="text" id="production_name" name="production_name" placeholder="Name of person" required>
+                <!-- DYNAMIC PRODUCTION CREDITS CONTAINER -->
+                <div id="contributors_container">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="production_role_1">Production Role 1</label>
+                            <select id="production_role_1" name="production_role_1" required>
+                                <option value="" disabled selected>Select Role...</option>
+                                <option value="Producer">Producer</option>
+                                <option value="Co-Producer">Co-Producer</option>
+                                <option value="Vocal Producer">Vocal Producer</option>
+                                <option value="Vocals">Vocals</option>
+                                <option value="Background Vocals">Background Vocals</option>
+                                <option value="Guitar">Guitar</option>
+                                <option value="Bass">Bass</option>
+                                <option value="Piano">Piano</option>
+                                <option value="Keyboards">Keyboards</option>
+                                <option value="Synthesizer">Synthesizer</option>
+                                <option value="Drums">Drums</option>
+                                <option value="Percussion">Percussion</option>
+                                <option value="Strings">Strings</option>
+                                <option value="All Instruments">All Instruments</option>
+                                <option value="Programming">Programming</option>
+                                <option value="Mixing Engineer">Mixing Engineer</option>
+                                <option value="Mastering Engineer">Mastering Engineer</option>
+                                <option value="Recording Engineer">Recording Engineer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="production_name_1">Contributor Name 1</label>
+                            <input type="text" id="production_name_1" name="production_name_1" placeholder="Name of person" required>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Additional Notes / Extra Credits (Optional) -->
-                <div class="form-group">
-                    <label for="extra_credits">Additional Credits (Optional)</label>
-                    <textarea id="extra_credits" name="extra_credits" rows="2" placeholder="List any other contributors here..."></textarea>
-                </div>
+
+                <!-- ADD CONTRIBUTOR BUTTON -->
+                <button type="button" id="add_contributor_btn" class="add-contributor-btn">+ Add Another Contributor</button>
 
                 <button type="submit" class="submit-btn">Submit Track</button>
             </form>
         </div>
     </div>
 
+    <!-- JAVASCRIPT FOR DYNAMIC FIELDS -->
+    <script>
+        let contributorCount = 1;
+        
+        const roleOptions = `
+            <option value="" disabled selected>Select Role...</option>
+            <option value="Producer">Producer</option>
+            <option value="Co-Producer">Co-Producer</option>
+            <option value="Vocal Producer">Vocal Producer</option>
+            <option value="Vocals">Vocals</option>
+            <option value="Background Vocals">Background Vocals</option>
+            <option value="Guitar">Guitar</option>
+            <option value="Bass">Bass</option>
+            <option value="Piano">Piano</option>
+            <option value="Keyboards">Keyboards</option>
+            <option value="Synthesizer">Synthesizer</option>
+            <option value="Drums">Drums</option>
+            <option value="Percussion">Percussion</option>
+            <option value="Strings">Strings</option>
+            <option value="All Instruments">All Instruments</option>
+            <option value="Programming">Programming</option>
+            <option value="Mixing Engineer">Mixing Engineer</option>
+            <option value="Mastering Engineer">Mastering Engineer</option>
+            <option value="Recording Engineer">Recording Engineer</option>
+        `;
+
+        document.getElementById('add_contributor_btn').addEventListener('click', function() {
+            contributorCount++;
+            const container = document.getElementById('contributors_container');
+            const newRow = document.createElement('div');
+            newRow.className = 'form-row';
+            
+            newRow.innerHTML = `
+                <div class="form-group">
+                    <label for="production_role_${contributorCount}">Production Role ${contributorCount}</label>
+                    <select id="production_role_${contributorCount}" name="production_role_${contributorCount}" required>
+                        ${roleOptions}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="production_name_${contributorCount}">Contributor Name ${contributorCount}</label>
+                    <input type="text" id="production_name_${contributorCount}" name="production_name_${contributorCount}" placeholder="Name of person" required>
+                </div>
+            `;
+            
+            container.appendChild(newRow);
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,103 @@
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Successful</title>
+    <!-- Links to your existing style.css for the global reset, menu, and fonts -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* SUCCESS PAGE SPECIFIC STYLES */
+        .success-container {
+            max-width: 600px;
+            margin: 60px auto 0; /* Centers the box with spacing from the top */
+            background: rgba(18, 18, 18, 0.8);
+            padding: 60px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .success-message {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+        }
+
+        /* Styled identically to the submit button */
+        .home-btn {
+            display: inline-block;
+            min-width: 200px;
+            padding: 15px 30px;
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            font-family: 'Courier New', Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .home-btn:hover {
+            background: #00ff00;
+            color: #121212;
+            border-color: #00ff00;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PERSISTENT BLUR MENU -->
+    <header id="top-menu">
+        <img src="logo.png" alt="Logo" class="nav-logo">
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <div class="dropdown">
+                <a href="#">Submit ▼</a>
+                <div class="dropdown-content">
+                    <a href="submit.html">Music</a>
+                    <a href="#">Art</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CONTENT LAYOUT -->
+    <div class="content-wrapper">
+        <div class="success-container">
+            <!-- Green checkmark icon -->
+            <div class="success-icon">✓</div>
+            
+            <h1 class="page-title" style="margin-bottom: 20px;">Success</h1>
+            
+            <p class="success-message">
+                Your track has been successfully submitted.<br>
+                Our team will review your audio and credits shortly.
+            </p>
+            
+            <!-- Adjust the href to point to your actual homepage -->
+            <a href="index.html" class="home-btn">Return Home</a>
+        </div>
+    </div>
+
+</body>
+</html>"""
+
+with open("music-submit-success.html", "w") as f:
+    f.write(html_content)
+
+print("File generated successfully.")

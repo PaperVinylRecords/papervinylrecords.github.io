@@ -1,0 +1,64 @@
+name: Paper Vinyl Distro API Engine
+
+on:
+  repository_dispatch:
+    types: [submit_release]
+
+jobs:
+  process_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Initialize Processing Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run Backend Architecture Script
+        env:
+          RELEASE_DATA: ${{ jsonEncode(github.event.client_payload) }}
+        run: |
+          python - << 'EOF'
+          import os
+          import json
+          import csv
+
+          # 1. Parse incoming data transmitted from the papervinylmusic.com front-end
+          data = json.loads(os.environ['RELEASE_DATA'])
+          artist = data.get('artist', 'Unknown Artist').replace(' ', '_')
+          title = data.get('title', 'Unknown Title').replace(' ', '_')
+          label = "Paper Vinyl Records" # Enforced server-side
+
+          # 2. Build dedicated data storage vaults
+          vault_dir = f"vault/releases/{artist}-{title}"
+          os.makedirs(vault_dir, exist_ok=True)
+
+          # 3. Create the standardized catalog JSON file
+          metadata = {
+              "artist": data.get('artist'),
+              "title": data.get('title'),
+              "record_label": label,
+              "timestamp": os.popen('date -u +"%Y-%m-%dT%H:%M:%SZ"').read().strip()
+          }
+          with open(f"{vault_dir}/metadata.json", "w") as f:
+              json.dump(metadata, f, indent=4)
+
+          # 4. Update your master CSV database ledger
+          csv_path = "vault/master_catalog.csv"
+          file_exists = os.path.isfile(csv_path)
+          with open(csv_path, mode='a', newline='') as f:
+              writer = csv.writer(f)
+              if not file_exists:
+                  writer.writerow(['Artist', 'Title', 'Label', 'Path'])
+              writer.writerow([data.get('artist'), data.get('title'), label, vault_dir])
+          EOF
+
+      - name: Commit Records Securely to Database Vault
+        run: |
+          git config --global user.name "PV Distro Bot"
+          git config --global user.email "bot@papervinylmusic.com"
+          git add vault/
+          git commit -m "API Ingestion: New release processed for Paper Vinyl Records"
+          git push

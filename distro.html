@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paper Vinyl Records - Distro Portal</title>
-    <!-- Automatically hooks into your existing stylesheet styles -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,7 +25,6 @@
 
             <div class="form-group">
                 <label for="pvLabel">Imprint Record Label</label>
-                <!-- Hardcoded and locked so metadata stays consistent across API requests -->
                 <input type="text" id="pvLabel" value="Paper Vinyl Records" readonly>
             </div>
 
@@ -39,11 +37,9 @@
 document.getElementById('pvDistroForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // 1. Grab fresh values directly from the input fields above
     const artistName = document.getElementById('pvArtist').value;
     const trackTitle = document.getElementById('pvTitle').value;
 
-    // 2. Build the secure data payload structure that our Python workflow expects
     const payload = {
         event_type: "submit_release",
         client_payload: {
@@ -52,40 +48,42 @@ document.getElementById('pvDistroForm').addEventListener('submit', async (e) => 
         }
     };
 
-    // CONFIGURATION CONFIG: Double check your token is inside the quotes below
+    // CONFIGURATION CONFIG
     const GITHUB_USERNAME = "PaperVinylRecords"; 
     const REPO_NAME = "papervinylrecords.github.io"; 
-    const PERSONAL_ACCESS_TOKEN = "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN"; 
+    
+    // PASTE YOUR GENERATED TOKEN HERE INSIDE THE QUOTES
+    const PERSONAL_ACCESS_TOKEN = "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"; 
 
     const targetUrl = `https://github.com{GITHUB_USERNAME}/${REPO_NAME}/dispatches`;
     
+    // Explicitly stripping spaces to ensure the bearer authorization token parses cleanly
+    const cleanToken = PERSONAL_ACCESS_TOKEN.trim();
+
     try {
-        // 3. Fire the secure POST call using explicit CORS and structural headers
         const response = await fetch(targetUrl, {
             method: "POST",
-            mode: "cors", // Forces the web browser to allow the cross-domain transmission
             headers: {
+                // FIXED: Explicitly added the required User-Agent string to satisfy GitHub API rules
+                "User-Agent": "Paper-Vinyl-Distro-App",
                 "Accept": "application/vnd.github+json",
-                "X-GitHub-Api-Version": "2022-11-28", // Explicit API version required by modern GitHub engines
-                "Authorization": `Bearer ${PERSONAL_ACCESS_TOKEN.trim()}`, 
+                "X-GitHub-Api-Version": "2022-11-28", 
+                "Authorization": `token ${cleanToken}`, 
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
         });
 
-        // GitHub returns a 204 No Content status when a repository dispatch is successfully triggered
-        if (response.status === 204) {
-            alert("Success! Backend pipeline triggered. Your metadata.json and CSV will update in a few seconds.");
+        if (response.status === 204 || response.ok) {
+            alert("Success! Backend pipeline triggered. Check your Actions tab.");
             document.getElementById('pvDistroForm').reset();
         } else {
             const errorText = await response.text();
-            console.error("API Error Status:", response.status, errorText);
-            alert(`API rejected request. Status: ${response.status}. Reason: ${errorText || 'Check token permissions.'}`);
+            alert(`API Response Code: ${response.status}\nDetails: ${errorText}`);
         }
     } catch (error) {
-        // If the browser blocks the connection locally, print the exact system error details
-        console.error("Transmission Error:", error);
-        alert(`Network transmission error: ${error.message}\n\nIf this persists, make sure your token is pasted correctly and your organization allows classic token access.`);
+        console.error("Fetch Interrupted Details:", error);
+        alert(`Transmission Blocked!\n\nReason: Your browser dropped the connection to GitHub.\n\nFix This:\n1. Go to your GitHub organization token policy settings and authorize this token.\n2. Ensure your token string starts with "ghp_".`);
     }
 });
 </script>

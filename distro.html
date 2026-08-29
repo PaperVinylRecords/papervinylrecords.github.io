@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paper Vinyl Records Distribution Portal</title>
-    <!-- Links directly to your existing stylesheet -->
+    <title>Paper Vinyl Records - Distro Portal</title>
+    <!-- Automatically hooks into your existing stylesheet styles -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,43 +12,79 @@
 <div class="pv-portal-wrapper">
     <div class="portal-container">
         <h2>PV Distro Engine</h2>
-        <!-- Uses Web3Forms (100% Free Backend API) -->
-        <form action="https://web3forms.com" method="POST" enctype="multipart/form-data">
-            
-            <!-- GO TO web3forms.com, put in your email to get a free key, and paste it below -->
-            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
-            <input type="hidden" name="subject" value="New Release Ingestion - Paper Vinyl Records">
-            
+        
+        <form id="pvDistroForm">
             <div class="form-group">
-                <label for="artist">Primary Artist</label>
-                <input type="text" id="artist" name="Artist_Name" placeholder="e.g., Artist Name" required>
+                <label for="pvArtist">Primary Artist</label>
+                <input type="text" id="pvArtist" placeholder="e.g., Mac Miller" required>
             </div>
 
             <div class="form-group">
-                <label for="title">Track Title</label>
-                <input type="text" id="title" name="Track_Title" placeholder="e.g., Track Title" required>
+                <label for="pvTitle">Track Title</label>
+                <input type="text" id="pvTitle" placeholder="e.g., Swimming Upstream" required>
             </div>
 
             <div class="form-group">
-                <label for="label">Imprint Record Label</label>
-                <!-- Hardcoded and locked to Paper Vinyl Records -->
-                <input type="text" id="label" name="Record_Label" value="Paper Vinyl Records" readonly>
-            </div>
-
-            <div class="form-group">
-                <label for="audio">Master Audio File (.WAV)</label>
-                <input type="file" id="audio" name="Audio_File" accept=".wav" required>
-            </div>
-
-            <div class="form-group">
-                <label for="artwork">Cover Art (.JPG)</label>
-                <input type="file" id="artwork" name="Artwork_File" accept=".jpg,.jpeg" required>
+                <label for="pvLabel">Imprint Record Label</label>
+                <!-- Hardcoded and locked so metadata stays consistent across API requests -->
+                <input type="text" id="pvLabel" value="Paper Vinyl Records" readonly>
             </div>
 
             <button type="submit" class="pv-distro-btn">Compile and Process Release</button>
         </form>
     </div>
 </div>
+
+<script>
+document.getElementById('pvDistroForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // 1. Grab fresh values directly from the input fields above
+    const artistName = document.getElementById('pvArtist').value;
+    const trackTitle = document.getElementById('pvTitle').value;
+
+    // 2. Build the secure data payload structure that our Python workflow expects
+    const payload = {
+        event_type: "submit_release",
+        client_payload: {
+            artist: artistName,
+            title: trackTitle
+        }
+    };
+
+    // CONFIGURATION CONFIG: Update these three values to connect your API
+    const GITHUB_USERNAME = "YOUR_GITHUB_USERNAME"; 
+    const REPO_NAME = "YOUR_REPO_NAME"; 
+    const PERSONAL_ACCESS_TOKEN = "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN"; 
+
+    const targetUrl = `https://github.com{GITHUB_USERNAME}/${REPO_NAME}/dispatches`;
+    
+    try {
+        const response = await fetch(targetUrl, {
+            method: "POST",
+            headers: {
+                "Accept": "application/vnd.github+json",
+                "Authorization": `Bearer ${PERSONAL_ACCESS_TOKEN}`, 
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        // GitHub returns a 204 No Content status when a repository dispatch is successfully triggered
+        if (response.status === 204) {
+            alert("Success! Backend pipeline triggered. Your metadata.json and CSV will update in a few seconds.");
+            document.getElementById('pvDistroForm').reset();
+        } else {
+            const errorText = await response.text();
+            console.error("API Error Response:", errorText);
+            alert(`API connection failed (Status ${response.status}). See developer console logs.`);
+        }
+    } catch (error) {
+        console.error("Transmission Error:", error);
+        alert("Network transmission error. Could not reach the backend engine.");
+    }
+});
+</script>
 
 </body>
 </html>

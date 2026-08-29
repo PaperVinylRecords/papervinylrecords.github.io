@@ -18,7 +18,8 @@ jobs:
 
       - name: Run Backend Architecture Script
         env:
-          RELEASE_DATA: ${{ jsonEncode(github.event.client_payload) }}
+          # FIXED: Swapped out the invalid syntax for a native GitHub context dump
+          RELEASE_DATA: ${{ toJson(github.event.client_payload) }}
         run: |
           python - << 'EOF'
           import os
@@ -60,5 +61,5 @@ jobs:
           git config --global user.name "PV Distro Bot"
           git config --global user.email "bot@papervinylmusic.com"
           git add vault/
-          git commit -m "API Ingestion: New release processed for Paper Vinyl Records"
+          git commit -m "API Ingestion: New release processed for Paper Vinyl Records" || echo "No changes to commit"
           git push

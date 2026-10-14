@@ -27,7 +27,7 @@ const artistData = {
         presave: 'presave.html?artist=judeuk' 
     },
     'twistedanimations': { 
-        name: 'TwistedAnimations', 
+        name: 'ItsAmethystXP (Amethyst)', 
         desc: "", 
         img: 'images /twistedanimations.jpg', 
         spotify: 'https://open.spotify.com/artist/0lvJH8oBsZd5XqF0ETI3TD?si=wSWtSUEgTrSDYEynkDeqiA', 

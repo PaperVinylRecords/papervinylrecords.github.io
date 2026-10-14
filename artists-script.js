@@ -30,7 +30,7 @@ const artistData = {
         name: 'ItsAmethystXP (Amethyst)', 
         desc: "", 
         img: 'images /twistedanimations.jpg', 
-        spotify: 'https://open.spotify.com/artist/0lvJH8oBsZd5XqF0ETI3TD?si=wSWtSUEgTrSDYEynkDeqiA', 
+        spotify: 'https://open.spotify.com/artist/6uKxNHVrIWaYMmyIjBf3FE?si=anQxkjKYTSiaB0BjpJMamg', 
         soundcloud: '', 
         insta: '',
         presave: 'presave.html?artist=twistedanimations' // PVR OWN LINK
